@@ -14,6 +14,7 @@ class AuthController extends Controller
 {
     //
 
+
     public function login(Request $request)
     {
         $validator = validator($request->all(), [
@@ -23,12 +24,12 @@ class AuthController extends Controller
         ]);
 
         if (!$validator->fails()) {
-            $subscriber = Subscriber::with('subscription')->with('trainer')->where('phone', $request->get('phone'))->first();
-            if ($subscriber) {
-                if (Hash::check($request->get('password'), $subscriber->password)) {
+            $subscriber = Subscriber::where('phone', $request->get('phone'))->first();
+            if ($subscriber!==null) {
+                if (Hash::check($request->get('password'), $subscriber->password)===true) {
                     if ($subscriber->status == 1) {
                         $token = $subscriber->createToken('subscriber')->plainTextToken;
-                        $subscriber->fcm_token = $request->fcm_token;
+                        $subscriber->fcm_token = $request->get("fcm_token");
                         $subscriber->save();
                         return response()->json(
                             [
@@ -47,7 +48,7 @@ class AuthController extends Controller
                                 'message' => 'غير مصرح لك بالدخول أنت غير مصرح بك يرجى مراجة المالية'
 
                             ],
-                            400
+                            200
                         );
                     }
 
@@ -55,13 +56,14 @@ class AuthController extends Controller
                     return response()->json(
                         [
                             'status' => false,
-                            'message' => 'خطأ في كلمة المرور أو رقم الهاتف'
+                            'message' => 'خطأ في كلمة المرور '
                         ],
-                        400
+                        200
                     );
                 }
-            } else if (!$subscriber) {
+            } else if ($subscriber===null) {
                 $trainer = Trainer::where('phone', $request->get('phone'))->first();
+              if($trainer!==null){
                 if (Hash::check($request->get('password'), $trainer->password)) {
                     $token = $trainer->createToken('trainer')->plainTextToken;
                     $trainer->fcm_token = $request->fcm_token;
@@ -80,15 +82,24 @@ class AuthController extends Controller
                     return response()->json(
                         [
                             'status' => false,
-                            'message' => 'خطأ في كلمة المرور أو رقم الهاتف'
+                            'message' => 'خطأ في كلمة المرور'
                         ],
-                        400
+                        200
                     );
                 }
+              }else{
+                return response()->json(
+                    [
+                        'status' => false,
+                        'message' => 'خطأ في رقم الهاتف'
+                    ],
+                    200
+                );
+              }
             }
 
         } else {
-            return response()->json(['status' => false, 'message' => 'خطأ في كلمة المرور أو رقم الهاتف'], 400);
+            return response()->json(['status' => false, 'message' => 'خطأ في كلمة المرور أو رقم الهاتف'], 200);
         }
     }
 
