@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Rating;
 use App\Models\Trainer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -68,12 +69,16 @@ class AuthController extends Controller
                     $token = $trainer->createToken('trainer')->plainTextToken;
                     $trainer->fcm_token = $request->fcm_token;
                     $trainer->save();
+                    $rating = Rating::all()->where("trainer_id",$trainer->id);
+                    $avgRating = Rating::where("trainer_id",$trainer->id)->avg("rating");
+                    $trainer["avgRating"]=$avgRating;
                     return response()->json(
                         [
                             'status' => true,
                             'token' => $token,
                             'type' => 'trainer',
                             'trainer' => $trainer,
+                            'rating'=>$rating
 
                         ],
                         200
