@@ -12,7 +12,7 @@
                 <h4 class="content-title mb-0 my-auto"> <a href="{{ route('home') }}">الصفحة الرئيسية
                     </a>/</h4>
                 <span class="text-muted mt-1 tx-13 mr-2 mb-0">
-                    قائمة الشكاوي </span>
+                       قائمة شكاوي المدربين </span>
             </div>
         </div>
     </div>
@@ -39,52 +39,30 @@
                         <table class="table mg-b-0 text-md-nowrap table-hover " style="text-align: center">
                             <thead>
                                 <tr>
-                                    <th>أسم المشترك</th>
-                                    <th>رقم الهاتف </th>
-                                    <th>تاريخ الشكوى</th>
-                                    <th>رسالة الشكوى</th>
-                                    <th>نوع الشكوى</th>
+                                    <td>رقم الشكاوي</td>
+                                    <td>الرسالة</td>
+                                    <td>التاريخ</td>
                                     <td></td>
                                 </tr>
                             </thead>
 
                             <tbody>
-                                @if (isset($complaints))
-                                    @foreach ($complaints as $complaint)
-                                        <tr>
-                                            <td>{{ $complaint->subscriber->name }}</td>
-                                            <td>{{ $complaint->subscriber->phone }}</td>
-
-                                            <td>{{ $complaint->complaint_Date }}</td>
-                                            <td>{{ $complaint->complaint }}</td>
-                                            <td>{{ $complaint->complaint_type }}</td>
-                                            <td>
-                                                <a href="{{ Route('complaints.read', $complaint->id) }}"
-                                                    class="btn btn-success" style="color: #FFF">قرأة</a>
-
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                @endif
-
-                                {{-- trainer_complaints --}}
                                 @if (isset($trainer_complaints))
                                     @foreach ($trainer_complaints as $trainer_complaint)
                                         <tr>
-                                            <td>{{ $trainer_complaint->subscriber->name }}</td>
-                                            <td>{{ $complaint->subscriber->phone }}</td>
+                                            <td>{{ $trainer_complaint->id }}</td>
+                                            <td>{{ $trainer_complaint->message }}</td>
+                                            <td>{{ $trainer_complaint->created_at }}</td>
 
-                                            <td>{{ $complaint->complaint_Date }}</td>
-                                            <td>{{ $complaint->complaint }}</td>
-                                            <td>{{ $complaint->complaint_type }}</td>
                                             <td>
-                                                <a href="{{ Route('complaints.read', $complaint->id) }}"
+                                                <a href="{{ Route('readTrainerComplaint', $trainer_complaint->id) }}"
                                                     class="btn btn-success" style="color: #FFF">قرأة</a>
 
                                             </td>
                                         </tr>
                                     @endforeach
                                 @endif
+
 
                             </tbody>
                         </table>

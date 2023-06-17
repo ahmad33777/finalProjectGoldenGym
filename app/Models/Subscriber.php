@@ -35,6 +35,7 @@ class Subscriber extends Authenticatable
         'updated_at',
         'deleted_at',
         'email_verified_at',
+        'fcm_token',
     ];
 
 

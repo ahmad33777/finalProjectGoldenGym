@@ -145,7 +145,7 @@
                         <div class="clearfix">
                             <div class="float-right text-right">
                                 <p class="card-text text-muted mb-1">الصادرات اليومية</p>
-                                <h3> 100 ₪. </h3>
+                                <h3> </h3>
                             </div>
                             <div class="float-left  mt-2">
                                 <span class="text-primary ">
@@ -158,8 +158,7 @@
                 </div>
             </div>
         @endrole
-        @role(['vendor'])
-        @endrole
+
 
 
         @role('vendor')
@@ -194,17 +193,151 @@
             </div>
         @endrole
     </div>
+    @role(['admin'])
+        <div class="row row-sm">
+            {{-- احصائيات المشتركين السنوبية --}}
+            <div class="col-sm-12 col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="main-content-label">
+                            إحصائيات المشتركين السنوية
+                        </div>
+                        <p class="mg-b-20">نسبة المشتركين الجدد مع المشتركين الحالين</p>
+                        <div>
+                            <canvas id="chart2"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {{-- احصائيات الواردات --}}
+            <div class="col-sm-12 col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="main-content-label">
+                            إحصائيات الواردات السنوية
+                        </div>
+                        <p class="mg-b-20"> الواردات المالية خلال السنة</p>
+
+                        <div>
+                            <canvas id="incommingChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {{-- add new incomming  --}}
+            <div class="col-sm-12 col-md-4  " style=" border-radius:8px ; color: white ; ">
+                <div class="card">
+                    <div class="card-body" style="border-radius:8px ">
+                        <div class="main-content-label">
+                            الصادرات
+                        </div>
+                        <p class="mg-b-20" style="color:#000">
+                            اضافة مصاريف تشغيلية جديدة
+                           </p>
+                        <form>
+                            <input list="types" placeholder="ادخل نوع الصادر " class="form-control" id=""
+                                name="" style=" border: 1px solid #1196db">
+                            <datalist id="types">
+                                <option value="مصاريف تشغيلية"> مصاريف تشغيلية</option>
+                                <option value="مصاريف شحن الكهرباء">مصاريف شحن الكهرباء</option>
+                            </datalist>
+                            <br>
+                            <input type="number" class="form-control" min="0" placeholder="ادخل قيمة الصادر بالشيكل"
+                                style=" border: 1px solid #1196db; margin-bottom: 17px" name="" id="incoming_value">
+                            <br>
+                            <div style="text-align: center">
+                                <button type="button" class="btn btn-warning">تصدير وارد</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endrole
 
 
 
 
-
-
-
-    </div>
-    <!-- Container closed -->
 @endsection
 @section('js')
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+    {{-- تحليل  المشتركين --}}
+    <script>
+        console.log({!! json_encode($datasets) !!});
+        var ctx = document.getElementById('chart2');
+        var subscriberchart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: {!! json_encode($labels) !!},
+                datasets: {!! json_encode($datasets) !!},
+            },
+            options: {
+                plugins: {
+                    legend: {
+                        display: false,
+                    },
+
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            stepSize: 1
+                        },
+                        title: {
+                            display: true,
+                            text: 'عدد المشتركين'
+                        },
+
+                    }
+                },
 
 
+            },
+
+
+        });
+    </script>
+
+    {{-- incommin cgart --}}
+    <script>
+        console.log({!! json_encode($datasets) !!});
+        var ctx = document.getElementById('incommingChart');
+        var incommingChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: {!! json_encode($labels) !!},
+                datasets: {!! json_encode($datasetIncomming) !!},
+            },
+
+            options: {
+                plugins: {
+                    legend: {
+                        display: false,
+                    },
+
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            stepSize: 10
+                        },
+                        title: {
+                            display: true,
+                            text: 'مجموع الواردات بالشيكل  خلال الاشهر',
+
+                        }
+                    }
+                },
+
+
+            },
+
+
+        });
+    </script>
 @endsection

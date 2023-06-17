@@ -26,6 +26,7 @@ class AttendanceController extends Controller
 
         $totalTime = '00:00:00';
         $interval = CarbonInterval::seconds(0);
+        
         foreach ($attendances as $attendance) {
             $interval->add(CarbonInterval::createFromFormat('H:i:s', $attendance->duration_time))->cascade();
         }

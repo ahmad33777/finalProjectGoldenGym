@@ -21,14 +21,13 @@ class AuthController extends Controller
             'password' => 'required|min:5',
             'fcm_token' => 'required|string'
         ]);
-
         if (!$validator->fails()) {
-            $subscriber = Subscriber::with('subscription')->with('trainer')->where('phone', $request->get('phone'))->first();
-            if ($subscriber) {
-                if (Hash::check($request->get('password'), $subscriber->password)) {
+            $subscriber = Subscriber::with('subscription')->where('phone', $request->get('phone'))->first();
+            if ($subscriber !== null) {
+                if (Hash::check($request->get('password'), $subscriber->password) === true) {
                     if ($subscriber->status == 1) {
                         $token = $subscriber->createToken('subscriber')->plainTextToken;
-                        $subscriber->fcm_token = $request->fcm_token;
+                        $subscriber->fcm_token = $request->get("fcm_token");
                         $subscriber->save();
                         return response()->json(
                             [
@@ -47,49 +46,135 @@ class AuthController extends Controller
                                 'message' => 'غير مصرح لك بالدخول أنت غير مصرح بك يرجى مراجة المالية'
 
                             ],
-                            400
+                            200
                         );
                     }
-
                 } else {
                     return response()->json(
                         [
                             'status' => false,
-                            'message' => 'خطأ في كلمة المرور أو رقم الهاتف'
-                        ],
-                        400
-                    );
-                }
-            } else if (!$subscriber) {
-                $trainer = Trainer::where('phone', $request->get('phone'))->first();
-                if (Hash::check($request->get('password'), $trainer->password)) {
-                    $token = $trainer->createToken('trainer')->plainTextToken;
-                    $trainer->fcm_token = $request->fcm_token;
-                    $trainer->save();
-                    return response()->json(
-                        [
-                            'status' => true,
-                            'token' => $token,
-                            'type' => 'trainer',
-                            'trainer' => $trainer,
-
+                            'message' => 'خطأ في كلمة المرور '
                         ],
                         200
                     );
+                }
+            } else if ($subscriber === null) {
+                $trainer = Trainer::where('phone', $request->get('phone'))->first();
+                if ($trainer !== null) {
+                    if (Hash::check($request->get('password'), $trainer->password)) {
+                        $divice_name = $request->post('divice_name', $request->userAgent());
+                        $token = $trainer->createToken($divice_name)->plainTextToken;
+                        $trainer->fcm_token = $request->fcm_token;
+                        $trainer->save();
+                        return response()->json(
+                            [
+                                'status' => true,
+                                'token' => $token,
+                                'type' => 'trainer',
+                                'trainer' => $trainer,
+
+                            ],
+                            200
+                        );
+                    } else {
+                        return response()->json(
+                            [
+                                'status' => false,
+                                'message' => 'خطأ في كلمة المرور'
+                            ],
+                            200
+                        );
+                    }
                 } else {
                     return response()->json(
                         [
                             'status' => false,
-                            'message' => 'خطأ في كلمة المرور أو رقم الهاتف'
+                            'message' => 'خطأ في رقم الهاتف'
                         ],
-                        400
+                        200
                     );
                 }
             }
 
         } else {
-            return response()->json(['status' => false, 'message' => 'خطأ في كلمة المرور أو رقم الهاتف'], 400);
+            return response()->json(['status' => false, 'message' => 'خطأ في كلمة المرور أو رقم الهاتف'], 200);
         }
+        // if (!$validator->fails()) {
+        //     $subscriber = Subscriber::with('subscription')->with('trainer')->where('phone', $request->get('phone'))->first();
+        //     if ($subscriber) {
+        //         if (Hash::check($request->get('password'), $subscriber->password)) {
+        //             if ($subscriber->status == 1) {
+        //                 $token = $subscriber->createToken('subscriber')->plainTextToken;
+        //                 $subscriber->fcm_token = $request->fcm_token;
+        //                 $subscriber->save();
+        //                 return response()->json(
+        //                     [
+        //                         'status' => true,
+        //                         'token' => $token,
+        //                         'type' => 'subscriber',
+        //                         'subscriber' => $subscriber,
+
+        //                     ],
+        //                     200
+        //                 );
+        //             } else {
+        //                 return response()->json(
+        //                     [
+        //                         'status' => false,
+        //                         'message' => 'غير مصرح لك بالدخول أنت غير مصرح بك يرجى مراجة المالية'
+
+        //                     ],
+        //                     400
+        //                 );
+        //             }
+
+        //         } else {
+        //             return response()->json(
+        //                 [
+        //                     'status' => false,
+        //                     'message' => 'خطأ في كلمة المرور أو رقم الهاتف'
+        //                 ],
+        //                 400
+        //             );
+        //         }
+        //     } else if (!$subscriber) {
+        //         $trainer = Trainer::where('phone', $request->get('phone'))->first();
+        //         if (Hash::check($request->get('password'), $trainer->password)) {
+        //             $token = $trainer->createToken('trainer')->plainTextToken;
+        //             $trainer->fcm_token = $request->fcm_token;
+        //             $trainer->save();
+        //             return response()->json(
+        //                 [
+        //                     'status' => true,
+        //                     'token' => $token,
+        //                     'type' => 'trainer',
+        //                     'trainer' => $trainer,
+
+        //                 ],
+        //                 200
+        //             );
+        //         } else {
+        //             return response()->json(
+        //                 [
+        //                     'status' => false,
+        //                     'message' => 'خطأ في كلمة المرور أو رقم الهاتف'
+        //                 ],
+        //                 400
+        //             );
+        //         }
+        //     } else {
+        //         return response()->json(
+        //             [
+        //                 'status' => false,
+        //                 'message' => 'المستخدم غير معروف  ؟؟'
+        //             ],
+        //             400
+        //         );
+        //     }
+
+        // } else {
+        //     return response()->json(['status' => false, 'message' => 'خطأ في كلمة المرور أو رقم الهاتف'], 400);
+        // }
     }
 
     public function logout(Request $request)

@@ -38,23 +38,24 @@ class ForgetPasswordController extends Controller
                     $data['email'] = $request->email;
                     $data['title'] = 'Password Reset';
                     $data['body'] = 'من فضلك إضغط على الرابط التالي من أجل إعادة تعين كلمة المرور الخاصة بك';
-
-
-                    Mail::to( $request->email)->send(new ResetPasswordMail($data));
-                    // Mail::send('ResetPasswordMail', ['data' => $data], function ($message) use ($data) {
-                    //     $message->to($data['email'])->subject($data['title']);
-                    // });
+                    Mail::to('nouh.work@gmail.com')->send(new ResetPasswordMail($data));
                     $dateTime = Carbon::now()->format('Y-m-d H:i:s');
 
+                    $result = PasswordReset::where('token', $token)->first();
 
-                    // PasswordReset::updatedOrCreate(
-                    //     ['email' => $request->email],
-                    //     [
-                    //         'token' => $token,
-                    //         'created_at' => $dateTime,
-
-                    //     ],
-                    // );
+                    if (is_null($result)) {
+                        $newReast = new PasswordReset([
+                            'email' => $request->email,
+                            'token' => $token,
+                            'created_at' => $dateTime
+                        ]);
+                        $newReast->save();
+                    } else {
+                        $result->email = $request->email;
+                        $result->token = $token;
+                        $result->created_at = $dateTime;
+                        $result->update();
+                    }
 
                     return response()->json(
                         [
@@ -95,4 +96,7 @@ class ForgetPasswordController extends Controller
             );
         }
     }
+
+
+
 }

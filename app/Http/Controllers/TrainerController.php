@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\PasswordReset;
 use App\Models\Trainer;
 use App\Models\schedule;
 use App\Models\TrainerAttendance;
@@ -306,9 +307,6 @@ class TrainerController extends Controller
                 ]
             );
         }
-
-
-
     }
 
 
@@ -399,4 +397,17 @@ class TrainerController extends Controller
 
 
     }
+
+    public function resetPasswordshow(Request $request)
+    {
+        $resetData = PasswordReset::where('token', $request->token)->get();
+        if (isset($resetData->token) && count($resetData) > 0) {
+            $trainer = Trainer::where('email', $resetData[0]['email']);
+            return view('password.resetPassword')->with('trainer', $trainer);
+        } else {
+            return view('errors.404');
+        }
+    }
+
+
 }

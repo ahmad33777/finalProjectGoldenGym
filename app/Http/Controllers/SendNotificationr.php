@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Notification;
 use App\Models\Subscriber;
 use App\Models\Trainer;
 use App\Models\User;
@@ -49,7 +50,7 @@ class SendNotificationr extends Controller
             }
 
         }
-        
+
 
         $subscribers = Subscriber::all();
         foreach ($subscribers as $subscriber) {
@@ -65,7 +66,13 @@ class SendNotificationr extends Controller
 
         }
 
+        // Sore  notification to notification  table of db
 
+        $newNotification = new Notification();
+        $newNotification->title = $title;
+        $newNotification->message = $body;
+
+        $newNotification->save();
         session()->flash('status', true);
         return redirect()->route('create.notification');
     }

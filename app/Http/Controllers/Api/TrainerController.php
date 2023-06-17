@@ -3,6 +3,9 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Notification;
+use App\Models\PasswordReset;
+use App\Models\Subscriber;
 use App\Models\Trainer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -10,15 +13,8 @@ use Hash;
 
 class TrainerController extends Controller
 {
-    //
-
-
-
     public function changePassword(Request $request)
     {
-        // $trainer = Trainer::find($id);
-
-
         $validator = Validator(
             $request->all(),
             [
@@ -71,4 +67,80 @@ class TrainerController extends Controller
         }
 
     }
+
+
+
+    public function showNotificatio()
+    {
+        try {
+            $notifications = Notification::all();
+            if (!$notifications) {
+                return response()->json(
+                    [
+                        'status' => false,
+                        'message' => 'حدثة مشكلة معينة !!!'
+                    ],
+                    400
+                );
+            } else {
+                return response()->json(
+                    [
+                        'status' => true,
+                        'notifications' => $notifications
+                    ],
+                    200
+                );
+            }
+        } catch (\Exception $e) {
+            return response()->json(
+                [
+                    'status' => false,
+                    'message' => $e->getMessage(),
+                ],
+                400
+            );
+        }
+
+
+    }
+
+    public function showSubscribers(Request $request)
+    {
+        $validator = Validator(
+            $request->all(),
+            [
+                'trainer_id' => 'required|numeric|exists:trainers,id'
+            ],
+        );
+        try {
+            if (!$validator->fails()) {
+                $trainer_id = $request->post('trainer_id');
+                $subscribers = Subscriber::with('subscription')->where('trainer_id', $trainer_id)->get();
+                return response()->json([
+                    'status' => true,
+                    'subscribers' => $subscribers
+                ], 200);
+
+            } else {
+                return response()->json(
+                    [
+                        'status' => false,
+                        'message' => $validator->getMessageBag()->first(),
+                    ],
+                    400
+                );
+            }
+        } catch (\Exception $e) {
+            return response()->json(
+                [
+                    'status' => false,
+                    'message' => $e->getMessage(),
+                ],
+                500
+            );
+        }
+
+
+    }
+
 }

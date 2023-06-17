@@ -4,12 +4,15 @@ use App\Http\Controllers\ComplaintController;
 use App\Http\Controllers\FacebookController;
 use App\Http\Controllers\FinancialController;
 use App\Http\Controllers\IncomingController;
+use App\Http\Controllers\OfferController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\RatingController;
+use App\Http\Controllers\ResetPasswordController;
 use App\Http\Controllers\SendNotificationr;
 use App\Http\Controllers\SubscriptionRenewalController;
 use App\Http\Controllers\TrainerAttendanceController;
-use App\Mail\ResetPasswordMail;
+use App\Models\PasswordReset;
+use App\Models\Trainer;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RoleControler;
 use App\Http\Controllers\HomeController;
@@ -30,6 +33,8 @@ use App\Http\Controllers\UserProfileController;
 use App\Http\Controllers\SubscriptionController;
 use App\Http\Controllers\ChangePasswordController;
 use App\Http\Controllers\RolePermissionController;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Request;
 
 
 
@@ -38,7 +43,6 @@ Route::prefix('/admin')->middleware(['guest:web'])->group(function () {
     Route::get('login', [UserAuthController::class, 'showLogin'])->name('admin.login');
     Route::post('login', [UserAuthController::class, 'login'])->name('login');
 });
-
 
 Route::prefix('/admin')->middleware('auth:web')->group(function () {
     Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -160,6 +164,9 @@ Route::prefix('/admin')->middleware('auth:web')->group(function () {
         Route::get('/', [ComplaintController::class, 'index'])->name('complaints.index');
         Route::get('/read/{id}', [ComplaintController::class, 'readComplaint'])->name('complaints.read');
         Route::get('/archives', [ComplaintController::class, 'archives'])->name('complaints.archives');
+        Route::get('/trainerComplaints', [ComplaintController::class, 'trainerComplaints'])->name('trainer.complaints');
+        Route::get('/readTrainerComplaint/{id}', [ComplaintController::class, 'readTrainerComplaint'])->name('readTrainerComplaint');
+
     });
 
     Route::prefix('trainerAttendance')->group(function () {
@@ -168,38 +175,26 @@ Route::prefix('/admin')->middleware('auth:web')->group(function () {
         Route::post('/rejectionTrainerAttendance', [TrainerAttendanceController::class, 'rejectionTrainerAttendance'])->name('trainerAttendance.rejectionTrainerAttendance');
 
     });
-
-
     Route::prefix('/incomings')->group(function () {
         Route::get('/', [IncomingController::class, 'index'])->name('incomings.index');
     });
-
-
     Route::prefix('/facebook')->group(function () {
         Route::get('/create-post', [FacebookController::class, 'create'])->name('create-post');
         Route::post('/post', [FacebookController::class, 'createPost'])->name('facebook_post');
     });
-
-
     Route::get('ratings-index', [RatingController::class, 'index'])->name('ratings.index');
-
-
     Route::get('create-notification', [SendNotificationr::class, 'index'])->name('create.notification');
     Route::post('sendNotification', [SendNotificationr::class, 'sendNotification'])->name('send.notification');
 
+    Route::prefix('/offers')->group(function () {
+        Route::get('/offers', [OfferController::class, 'index'])->name('offer.index');
+        Route::get('/create', [OfferController::class, 'create'])->name('offer.create');
+        Route::post('/store', [OfferController::class, 'store'])->name('offer.store');
+        Route::delete('/destroy/{id}', [OfferController::class, 'destroy'])->name('offer.destroy');
+        Route::get('edit/{id}', [OfferController::class, 'edit'])->name('offer.edit');
+        Route::put('/update/{id}', [OfferController::class, 'update'])->name('offer.update');
+    });
 });
 
-
-Route::get('test', function () {
-    return view('test');
-});
-
-// Route::get('/send', function () {
-
-//     $mailData = [
-//         'name' => 'Amed Nouh',
-//         'message' => `Hi Ahmad Nouh`
-//     ];
-//     Mail::to('ahmadatefhasan2000@gmail.com')->send(new ResetPasswordMail());
-//     return response('good');
-// });
+// Route::get('/reset-password', [ResetPasswordController::class, 'resetPasswordLoad']);
+// Route::post('reset-Password', [ResetPasswordController::class, 'resetPassword']);

@@ -226,6 +226,9 @@
                             <a class="slide-item" href="{{ route('products.create') }}">اضافة منتج جديد </a>
                         </li>
                         <li>
+                            <a class="slide-item" href="{{ route('offer.index') }}">قائمة العروض الجديدة</a>
+                        </li>
+                        <li>
                             <a class="slide-item" href="#">بيع منتج</a>
                         </li>
                     </ul>
@@ -295,8 +298,10 @@
                     </a>
                     <ul class="slide-menu">
                         <li>
-
-                            <a class="slide-item" href="{{ route('complaints.index') }}">عرض الشكاوي</a>
+                            <a class="slide-item" href="{{ route('complaints.index') }}">عرض الشكاوي المشتركين</a>
+                        </li>
+                        <li>
+                            <a class="slide-item" href="{{ route('trainer.complaints') }}">عرض الشكاوي مدربين</a>
                         </li>
                         <li>
 
