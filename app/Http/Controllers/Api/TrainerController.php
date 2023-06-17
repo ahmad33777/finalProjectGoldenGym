@@ -9,7 +9,7 @@ use App\Models\Subscriber;
 use App\Models\Trainer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-use Hash;
+use Illuminate\Support\Facades\Hash;
 
 class TrainerController extends Controller
 {
