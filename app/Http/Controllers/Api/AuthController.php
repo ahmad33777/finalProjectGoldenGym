@@ -24,15 +24,9 @@ class AuthController extends Controller
             'fcm_token' => 'required|string'
         ]);
         if (!$validator->fails()) {
-<<<<<<< HEAD
             $subscriber = Subscriber::with('subscription')->where('phone', $request->get('phone'))->first();
             if ($subscriber !== null) {
                 if (Hash::check($request->get('password'), $subscriber->password) === true) {
-=======
-            $subscriber = Subscriber::where('phone', $request->get('phone'))->first();
-            if ($subscriber!==null) {
-                if (Hash::check($request->get('password'), $subscriber->password)===true) {
->>>>>>> 62d197cc1bdfd39c35d383c0090afe8a883e4896
                     if ($subscriber->status == 1) {
                         $token = $subscriber->createToken('subscriber')->plainTextToken;
                         $subscriber->fcm_token = $request->get("fcm_token");
@@ -51,7 +45,7 @@ class AuthController extends Controller
                         return response()->json(
                             [
                                 'status' => false,
-                                'message' => 'غير مصرح لك بالدخول أنت غير مصرح بك يرجى مراجة المالية'
+                                'message' => 'غير مصرح لك بالدخول  يرجى مراجة المالية'
 
                             ],
                             200
@@ -62,28 +56,6 @@ class AuthController extends Controller
                         [
                             'status' => false,
                             'message' => 'خطأ في كلمة المرور '
-<<<<<<< HEAD
-=======
-                        ],
-                        200
-                    );
-                }
-            } else if ($subscriber===null) {
-                $trainer = Trainer::where('phone', $request->get('phone'))->first();
-              if($trainer!==null){
-                if (Hash::check($request->get('password'), $trainer->password)) {
-                    $token = $trainer->createToken('trainer')->plainTextToken;
-                    $trainer->fcm_token = $request->fcm_token;
-                    $trainer->save();
-                    $avgRating = Rating::where("trainer_id",$trainer->id)->avg("rating");
-                    $trainer["avgRating"]=$avgRating;
-                    return response()->json(
-                        [
-                            'status' => true,
-                            'token' => $token,
-                            'type' => 'trainer',
-                            'trainer' => $trainer,
->>>>>>> 62d197cc1bdfd39c35d383c0090afe8a883e4896
                         ],
                         200
                     );
