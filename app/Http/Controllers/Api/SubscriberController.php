@@ -71,7 +71,7 @@ class SubscriberController extends Controller
 
     }
 
-
+   
     public function changePassword(Request $request)
     {
         $validator = Validator(
