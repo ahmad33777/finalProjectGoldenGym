@@ -23,6 +23,7 @@ class AuthController extends Controller
             'password' => 'required|min:5',
             'fcm_token' => 'required|string'
         ]);
+
         if (!$validator->fails()) {
             $subscriber = Subscriber::with('subscription')->where('phone', $request->get('phone'))->first();
             if ($subscriber !== null) {
@@ -91,16 +92,12 @@ class AuthController extends Controller
                     return response()->json(
                         [
                             'status' => false,
-<<<<<<< HEAD
                             'message' => 'خطأ في رقم الهاتف'
-=======
-                            'message' => 'خطأ في كلمة المرور'
->>>>>>> 62d197cc1bdfd39c35d383c0090afe8a883e4896
                         ],
                         200
                     );
                 }
-              }else{
+            } else {
                 return response()->json(
                     [
                         'status' => false,
@@ -108,88 +105,13 @@ class AuthController extends Controller
                     ],
                     200
                 );
-              }
             }
+
 
         } else {
             return response()->json(['status' => false, 'message' => 'خطأ في كلمة المرور أو رقم الهاتف'], 200);
         }
-        // if (!$validator->fails()) {
-        //     $subscriber = Subscriber::with('subscription')->with('trainer')->where('phone', $request->get('phone'))->first();
-        //     if ($subscriber) {
-        //         if (Hash::check($request->get('password'), $subscriber->password)) {
-        //             if ($subscriber->status == 1) {
-        //                 $token = $subscriber->createToken('subscriber')->plainTextToken;
-        //                 $subscriber->fcm_token = $request->fcm_token;
-        //                 $subscriber->save();
-        //                 return response()->json(
-        //                     [
-        //                         'status' => true,
-        //                         'token' => $token,
-        //                         'type' => 'subscriber',
-        //                         'subscriber' => $subscriber,
 
-        //                     ],
-        //                     200
-        //                 );
-        //             } else {
-        //                 return response()->json(
-        //                     [
-        //                         'status' => false,
-        //                         'message' => 'غير مصرح لك بالدخول أنت غير مصرح بك يرجى مراجة المالية'
-
-        //                     ],
-        //                     400
-        //                 );
-        //             }
-
-        //         } else {
-        //             return response()->json(
-        //                 [
-        //                     'status' => false,
-        //                     'message' => 'خطأ في كلمة المرور أو رقم الهاتف'
-        //                 ],
-        //                 400
-        //             );
-        //         }
-        //     } else if (!$subscriber) {
-        //         $trainer = Trainer::where('phone', $request->get('phone'))->first();
-        //         if (Hash::check($request->get('password'), $trainer->password)) {
-        //             $token = $trainer->createToken('trainer')->plainTextToken;
-        //             $trainer->fcm_token = $request->fcm_token;
-        //             $trainer->save();
-        //             return response()->json(
-        //                 [
-        //                     'status' => true,
-        //                     'token' => $token,
-        //                     'type' => 'trainer',
-        //                     'trainer' => $trainer,
-
-        //                 ],
-        //                 200
-        //             );
-        //         } else {
-        //             return response()->json(
-        //                 [
-        //                     'status' => false,
-        //                     'message' => 'خطأ في كلمة المرور أو رقم الهاتف'
-        //                 ],
-        //                 400
-        //             );
-        //         }
-        //     } else {
-        //         return response()->json(
-        //             [
-        //                 'status' => false,
-        //                 'message' => 'المستخدم غير معروف  ؟؟'
-        //             ],
-        //             400
-        //         );
-        //     }
-
-        // } else {
-        //     return response()->json(['status' => false, 'message' => 'خطأ في كلمة المرور أو رقم الهاتف'], 400);
-        // }
     }
 
     public function logout(Request $request)
@@ -205,6 +127,4 @@ class AuthController extends Controller
 
 
     }
-
-
 }
