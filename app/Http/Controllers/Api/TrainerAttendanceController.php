@@ -97,7 +97,7 @@ class TrainerAttendanceController extends Controller
                 } else {
                     return response()->json([
                         'status' => false,
-                        'message' => 'أنتا بالفعل قمت بتسجيل حضور لهذا اليوم'
+                        'message' => 'أنت بالفعل قمت بتسجيل حضور لهذا اليوم'
                     ], 200);
                 }
 

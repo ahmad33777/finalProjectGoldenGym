@@ -25,8 +25,7 @@ class TrainerController extends Controller
             ],
         );
         if (!$validator->fails()) {
-            $trainer = $request->user(); // المستخد الحالي
-            // $trainer = Trainer::find($id);
+            $trainer = $request->user(); // المستخدم الحالي
             $trainer = Trainer::find($request->trainer_id);
             if (Hash::check($request->old_password, $trainer->password)) {
                 $trainer = Trainer::find($trainer->id);
@@ -46,7 +45,7 @@ class TrainerController extends Controller
                             'status' => false,
                             'message' => 'فشلت عملة تغير كلمة المرور'
                         ],
-                        400
+                        200
                     );
                 }
 
@@ -54,16 +53,16 @@ class TrainerController extends Controller
                 return response()->json(
                     [
                         'status' => false,
-                        'message' => 'كلمة السر القديمة غير متطابقة !!'
+                        'message' => 'كلمة المرور القديمة غير متطابقة !!'
                     ],
-                    400
+                    200
                 );
             }
         } else {
             return response()->json([
                 'status' => false,
-                'message' => $validator->getMessageBag()->first(),
-            ], 400);
+                'message' => "يجب أن تتكون كلمة المرور على الأقل من 6 حروف",
+            ], 200);
         }
 
     }
