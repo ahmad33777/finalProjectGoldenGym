@@ -70,7 +70,7 @@ class OrderController extends Controller
 
     public function showMyOrders(Request $request)
     {
-        // 
+       
         $validator = validator($request->all(), [
             'subscriber_id' => 'required|numeric|exists:subscribers,id',
         ]);
