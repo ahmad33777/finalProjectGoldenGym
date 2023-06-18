@@ -72,7 +72,7 @@ class TrainerController extends Controller
     public function showNotificatio()
     {
         try {
-            $notifications = Notification::all();
+            $notifications = Notification::orderBy('created_at', 'desc')->get();
             if (!$notifications) {
                 return response()->json(
                     [
