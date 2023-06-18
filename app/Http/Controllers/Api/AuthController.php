@@ -69,6 +69,8 @@ class AuthController extends Controller
                         $token = $trainer->createToken($divice_name)->plainTextToken;
                         $trainer->fcm_token = $request->fcm_token;
                         $trainer->save();
+                        $avgRating = Rating::where("trainer_id",$trainer->id)->avg("rating");
+                        $trainer["avgRating"]=$avgRating;
                         return response()->json(
                             [
                                 'status' => true,
