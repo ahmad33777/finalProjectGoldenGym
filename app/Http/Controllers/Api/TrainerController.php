@@ -78,7 +78,7 @@ class TrainerController extends Controller
                 return response()->json(
                     [
                         'status' => false,
-                        'message' => 'حدثت مشكلة معينة !!!'
+                        'message' => 'حدثت مشكلة معينة !'
                     ],
                     400
                 );
