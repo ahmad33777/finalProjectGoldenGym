@@ -70,12 +70,16 @@ class OrderController extends Controller
 
     public function showMyOrders(Request $request)
     {
+        // 
         $validator = validator($request->all(), [
             'subscriber_id' => 'required|numeric|exists:subscribers,id',
         ]);
         if (!$validator->fails()) {
             $subscriber = Subscriber::find($request->post('subscriber_id'));
             $orders = $subscriber->orders;
+
+           
+
             foreach ($orders as $order) {
                 $logo_link = Storage::url($order->image);
                 $order->image = $logo_link;
