@@ -31,7 +31,7 @@ class TrainerComplaintController extends Controller
                     return response()->json(
                         [
                             'status' => true,
-                            'messagae' => 'تم إرسال الشكوى أو الملاحظة',
+                            'message' => ' تم إرسال الشكوى أو الملاحظة بنجاح',
                         ],
                         201
                     );
@@ -40,7 +40,7 @@ class TrainerComplaintController extends Controller
                     return response()->json(
                         [
                             'status' => true,
-                            'messagae' => 'فشل إرسال الشكوى',
+                            'message' => 'فشل إرسال الشكوى',
                         ],
                         401
                     );

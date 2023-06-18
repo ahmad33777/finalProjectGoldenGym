@@ -36,7 +36,7 @@ class TrainerAttendanceController extends Controller
                     200
                 );
             } else {
-                return response()->json(['status' => false, 'message' => 'لايوجد حضور وإنصؤاف لهذاذ الشهر '], 400);
+                return response()->json(['status' => false, 'message' => 'لايوجد حضور وإنصراف لهذا الشهر '], 400);
             }
         } else {
             return response()->json(
@@ -89,16 +89,16 @@ class TrainerAttendanceController extends Controller
                         return response()->json(
                             [
                                 'status' => false,
-                                'message' => 'لم يتمت تسجيل الحضور حاول مرة أخري',
+                                'message' => 'لم يتم تسجيل الحضور حاول مرة أخري',
                             ],
-                            400
+                            200
                         );
                     }
                 } else {
                     return response()->json([
                         'status' => false,
                         'message' => 'أنتا بالفعل قمت بتسجيل حضور لهذا اليوم'
-                    ], 400);
+                    ], 200);
                 }
 
 
@@ -106,9 +106,9 @@ class TrainerAttendanceController extends Controller
                 return response()->json(
                     [
                         'status' => false,
-                        'message' => 'حدث خطأ حاول مرة أخرى'
+                        'message' => 'حدث خطأ في البيانات المُدخلة حاول مرة أخرى'
                     ],
-                    400
+                    200
                 );
             }
         } else {
@@ -183,7 +183,7 @@ class TrainerAttendanceController extends Controller
                             'status' => false,
                             'message' => 'أنت بالفعل قمت بتسجيل إنصراف'
                         ],
-                        400
+                        200
                     );
                 }
 
@@ -195,7 +195,7 @@ class TrainerAttendanceController extends Controller
                         'status' => false,
                         'message' => 'حاول مرة أخري '
                     ],
-                    400
+                    200
                 );
             }
 
@@ -205,7 +205,7 @@ class TrainerAttendanceController extends Controller
                     'status' => false,
                     'message' => $validator->getMessageBag()->first(),
                 ],
-                400
+                200
             );
         }
 
