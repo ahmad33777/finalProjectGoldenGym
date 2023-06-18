@@ -71,6 +71,7 @@ class AuthController extends Controller
                         $trainer->save();
                         $avgRating = Rating::where("trainer_id",$trainer->id)->avg("rating");
                         $trainer["avgRating"]=$avgRating;
+                        
                         return response()->json(
                             [
                                 'status' => true,
