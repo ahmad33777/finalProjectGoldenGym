@@ -77,9 +77,9 @@ class TrainerController extends Controller
                 return response()->json(
                     [
                         'status' => false,
-                        'message' => 'حدثت مشكلة يبو نوح'
+                        'message' => "لا يوجد إشعارات"
                     ],
-                    400
+                    200
                 );
             } else {
                 return response()->json(
@@ -96,7 +96,7 @@ class TrainerController extends Controller
                     'status' => false,
                     'message' => $e->getMessage(),
                 ],
-                400
+                200
             );
         }
 
@@ -126,7 +126,7 @@ class TrainerController extends Controller
                         'status' => false,
                         'message' => $validator->getMessageBag()->first(),
                     ],
-                    400
+                    200
                 );
             }
         } catch (\Exception $e) {
@@ -135,7 +135,7 @@ class TrainerController extends Controller
                     'status' => false,
                     'message' => $e->getMessage(),
                 ],
-                500
+                200
             );
         }
 
