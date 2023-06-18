@@ -1,6 +1,8 @@
 <?php
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\ForgetPasswordController;
+use App\Http\Controllers\Api\OrderController;
+use App\Http\Controllers\Api\ProdcutController;
 use App\Http\Controllers\Api\RatingController;
 use App\Http\Controllers\Api\SubscriberController;
 use App\Http\Controllers\Api\TrainerComplaintController;
@@ -36,6 +38,10 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         Route::post('/ratingStore', [SubscriberController::class, 'ratingStore']);
         Route::get('/trainers', [SubscriberController::class, 'showTrainers']);
         Route::put('/chaneTrainers', [SubscriberController::class, 'chaneTrainers']);
+        Route::get('/products', [ProdcutController::class, 'index']);
+        Route::post('/order', [OrderController::class, 'order']);
+
+        Route::post('/myOrders', [OrderController::class, 'showMyOrders']);
     });
 
 

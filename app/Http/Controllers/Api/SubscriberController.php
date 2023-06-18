@@ -11,6 +11,7 @@ use App\Models\Subscriber;
 use App\Models\Trainer;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
 class SubscriberController extends Controller
@@ -23,7 +24,10 @@ class SubscriberController extends Controller
     public function showOffers()
     {
         $offers = Offer::where('deleted_at', null)->get();
-
+        foreach ($offers as $offer) {
+            $logo_link = Storage::url($offer->image);
+            $offer->image = $logo_link;
+        }
         if ($offers->isEmpty()) {
             return response()->json(
                 [
