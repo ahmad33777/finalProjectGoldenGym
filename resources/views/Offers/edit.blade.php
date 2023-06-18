@@ -101,14 +101,12 @@
                                 </div>
 
                                 <div class="col-5 mr-5">
-                                    <img src="{{ $offer->image }}" alt="Offer Image" style="margin-left:10px ">
+                                    <img src="{{ $offer->image }}" alt="Offer Image"  style="object-fit:fill; padding: 20px" >
                                 </div>
 
 
                             </div>
-
-                            <div class="col-3" style="margin-top: 26px">
-                            </div>
+ 
                         </div>
                 </div>
 

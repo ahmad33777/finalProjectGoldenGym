@@ -70,7 +70,7 @@
             @foreach ($offers as $offer)
                 <div style="margin: 10px">
                     <div class="card" style="width: 15rem; padding: 5px">
-                        <img src="{{ $offer->image }}" class="card-img-top" alt="offerimage" height="180px">
+                        <img src="{{ $offer->image }}" class="card-img-top" alt="offerimage" height="180px" style="object-fit:contain; padding: 15px">
                         <div class="card-body">
                             <h5 class="card-title">العنوان : {{ $offer->title }}</h5>
                             <p class="card-text">الوصف : {{ $offer->description }}</p>
