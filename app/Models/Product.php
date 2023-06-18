@@ -23,9 +23,21 @@ class Product extends Model
         'production_date',
         'expiry_date',
     ];
+    protected $hidden = [
+        'created_at',
+        'updated_at',
+        'deleted_at',
+        'pivot'
+    ];
 
     public function category()
     {
         return $this->belongsTo(Category::class);
+    }
+
+
+    public function subscribers()
+    {
+        return $this->belongsToMany(Subscriber::class);
     }
 }

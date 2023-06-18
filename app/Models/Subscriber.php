@@ -27,6 +27,12 @@ class Subscriber extends Authenticatable
         return $this->belongsTo(Trainer::class);
     }
 
+    public function orders()
+    {
+        return $this->belongsToMany(Product::class, 'orders', 'subscriber_id', 'product_id')
+            ->where('orders.deleted_at', null);
+        ;
+    }
 
     protected $hidden = [
         'password',
