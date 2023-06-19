@@ -30,8 +30,10 @@ class Subscriber extends Authenticatable
     public function orders()
     {
         return $this->belongsToMany(Product::class, 'orders', 'subscriber_id', 'product_id')
+            ->withPivot('id')
+            ->withPivot('status')
             ->where('orders.deleted_at', null);
-        ;
+         
     }
 
     protected $hidden = [
@@ -45,8 +47,5 @@ class Subscriber extends Authenticatable
     ];
 
 
-    public function products()
-    {
-        return $this->hasMany(Sale::class);
-    }
+
 }
