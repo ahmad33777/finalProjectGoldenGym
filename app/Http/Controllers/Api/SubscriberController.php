@@ -13,6 +13,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Hash;
 
 class SubscriberController extends Controller
 {
@@ -89,9 +90,9 @@ class SubscriberController extends Controller
         );
         if (!$validator->fails()) {
             $subscriber = Subscriber::find($request->subscriber_id);
-            if (\Hash::check($request->old_password, $subscriber->password)) {
+            if (Hash::check($request->old_password, $subscriber->password)) {
                 $trainer = Subscriber::find($subscriber->id);
-                $trainer->password = \Hash::make($request->password);
+                $trainer->password = Hash::make($request->password);
                 $result = $trainer->save();
                 if ($result) {
                     return response()->json(
@@ -107,7 +108,7 @@ class SubscriberController extends Controller
                             'status' => false,
                             'message' => 'فشلت عملة تغير كلمة المرور'
                         ],
-                        400
+                        200
                     );
                 }
 
@@ -117,7 +118,7 @@ class SubscriberController extends Controller
                         'status' => false,
                         'message' => 'كلمة السر القديمة غير متطابقة !!'
                     ],
-                    400
+                    200
                 );
             }
         } else {
@@ -170,7 +171,7 @@ class SubscriberController extends Controller
                         'status' => false,
                         'message' => 'تم تقيم المدرب سابقاَ لا يمكن تقيمه مرتين',
                     ],
-                    401
+                    200
                 );
 
             }
@@ -181,7 +182,7 @@ class SubscriberController extends Controller
                     'status' => false,
                     'message' => $validator->getMessageBag()->first(),
                 ],
-                400
+                200
             );
         }
     }

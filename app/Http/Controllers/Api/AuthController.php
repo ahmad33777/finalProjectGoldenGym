@@ -32,6 +32,8 @@ class AuthController extends Controller
                         $token = $subscriber->createToken('subscriber')->plainTextToken;
                         $subscriber->fcm_token = $request->get("fcm_token");
                         $subscriber->save();
+                        $trainer_name=Trainer::where("id",$subscriber->trainer_id)->get("name")->first();
+                        $subscriber["trainer_name"]=$trainer_name->name;
                         return response()->json(
                             [
                                 'status' => true,
