@@ -14,9 +14,9 @@ class PermissionController extends Controller
      */
     public function index()
     {
-        $permissions =   Permission::all();
-        // dd($Permissions->toArray());
-        return view('permissions.index', ['permissions' => $permissions]);
+        $permissions = Permission::all();
+        return view('permissions.index')->with(['permissions' => $permissions]);
+
     }
 
     /**
@@ -48,13 +48,13 @@ class PermissionController extends Controller
         );
 
         $permission = new Permission();
-        $permission->name =  $request->permission_name;
-        $permission->guard_name =  'web';
-        $isSaved =   $permission->save();
+        $permission->name = $request->permission_name;
+        $permission->guard_name = 'web';
+        $isSaved = $permission->save();
         // dd($isSaved);
         session()->flash('message', 'تمت الأضافة بنجاح');
 
-        return  redirect()->route('permissions.index');
+        return redirect()->route('permissions.index');
     }
 
     /**
@@ -99,7 +99,7 @@ class PermissionController extends Controller
      */
     public function destroy($id)
     {
-        $roleDestroy =  Permission::destroy($id);
+        $roleDestroy = Permission::destroy($id);
         if ($roleDestroy) {
             return response()->json(['icon' => 'success', 'title' => 'تم الحذف بنجاح'], 200);
         } else {

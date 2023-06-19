@@ -5,6 +5,7 @@ use App\Http\Controllers\FacebookController;
 use App\Http\Controllers\FinancialController;
 use App\Http\Controllers\IncomingController;
 use App\Http\Controllers\OfferController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\RatingController;
 use App\Http\Controllers\ResetPasswordController;
@@ -194,7 +195,18 @@ Route::prefix('/admin')->middleware('auth:web')->group(function () {
         Route::get('edit/{id}', [OfferController::class, 'edit'])->name('offer.edit');
         Route::put('/update/{id}', [OfferController::class, 'update'])->name('offer.update');
     });
+
+   Route::prefix('orders')->group(function(){
+        Route::get('/', [OrderController::class , 'index'])->name('order.indx');
+        Route::get('/orderAccept/{id}', [OrderController::class , 'acceptOrder'])->name('order.acceptOrder');
+        Route::get('/rejectOrder/{id}', [OrderController::class , 'rejectOrder'])->name('order.rejectOrder');
+
+    });     
+
 });
+
+
+
 
 // Route::get('/reset-password', [ResetPasswordController::class, 'resetPasswordLoad']);
 // Route::post('reset-Password', [ResetPasswordController::class, 'resetPassword']);
