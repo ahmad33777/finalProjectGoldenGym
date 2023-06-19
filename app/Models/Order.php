@@ -10,22 +10,5 @@ class Order extends Model
 {
     use HasFactory;
     use SoftDeletes;
-    // public function products()
-    // {
-    //     return $this->belongsToMany(Product::class);
-    // }
-    // public function products()
-    // {
-    //     return $this->belongsTo(Product::class);
-    // }
-
-    public function subscriber()
-    {
-        return $this->belongsTo(Subscriber::class);
-    }
-
-    // public function products()
-    // {
-    //     return $this->belongsToMany(Product::class);
-    // }
+   
 }
