@@ -17,7 +17,7 @@ return new class extends Migration {
             $table->foreignId('subscriber_id')->constrained('subscribers')->onUpdate('cascade')->onDelete('cascade')->nullable(false);
             $table->foreignId('product_id')->constrained('products')->onUpdate('cascade')->onDelete('cascade')->nullable(false);
             $table->date('order_date');
-            $table->boolean('status')->default(false);
+            $table->boolean('status')->default(false)->nullable(true);
             $table->timestamps();
             $table->softDeletes();
         });

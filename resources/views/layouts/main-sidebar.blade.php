@@ -229,7 +229,7 @@
                             <a class="slide-item" href="{{ route('offer.index') }}">قائمة العروض الجديدة</a>
                         </li>
                         <li>
-                            <a class="slide-item" href="#">بيع منتج</a>
+                            <a class="slide-item" href="{{ route('order.indx') }}">الطلبات</a>
                         </li>
                     </ul>
                 </li>
