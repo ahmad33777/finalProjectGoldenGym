@@ -5,7 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
- class PasswordReset extends Model
+
+class PasswordReset extends Model
 {
     use HasFactory;
     public $table = "password_resets";
@@ -17,5 +18,5 @@ use Illuminate\Support\Facades\DB;
         'created_at',
     ];
 
-    
+
 }

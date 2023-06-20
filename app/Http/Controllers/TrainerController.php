@@ -398,16 +398,7 @@ class TrainerController extends Controller
 
     }
 
-    public function resetPasswordshow(Request $request)
-    {
-        $resetData = PasswordReset::where('token', $request->token)->get();
-        if (isset($resetData->token) && count($resetData) > 0) {
-            $trainer = Trainer::where('email', $resetData[0]['email']);
-            return view('password.resetPassword')->with('trainer', $trainer);
-        } else {
-            return view('errors.404');
-        }
-    }
+ 
 
 
 }

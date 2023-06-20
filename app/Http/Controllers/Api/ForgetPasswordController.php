@@ -17,8 +17,12 @@ use Illuminate\Support\Facades\DB;
 
 class ForgetPasswordController extends Controller
 {
-    //
 
+    /**
+     * Summary of forgetPassword
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function forgetPassword(Request $request)
     {
         $validator = validator($request->all(), [
@@ -38,24 +42,12 @@ class ForgetPasswordController extends Controller
                     $data['email'] = $request->email;
                     $data['title'] = 'Password Reset';
                     $data['body'] = 'من فضلك إضغط على الرابط التالي من أجل إعادة تعين كلمة المرور الخاصة بك';
-                    Mail::to('nouh.work@gmail.com')->send(new ResetPasswordMail($data));
+                    Mail::to($request->email)->send(new ResetPasswordMail($data));
                     $dateTime = Carbon::now()->format('Y-m-d H:i:s');
-
-                    $result = PasswordReset::where('token', $token)->first();
-
-                    if (is_null($result)) {
-                        $newReast = new PasswordReset([
-                            'email' => $request->email,
-                            'token' => $token,
-                            'created_at' => $dateTime
-                        ]);
-                        $newReast->save();
-                    } else {
-                        $result->email = $request->email;
-                        $result->token = $token;
-                        $result->created_at = $dateTime;
-                        $result->update();
-                    }
+                    PasswordReset::updateOrCreate(
+                        ['email' => $request->email],
+                        ['token' => $token, 'created_at' => $dateTime],
+                    );
 
                     return response()->json(
                         [
@@ -95,6 +87,53 @@ class ForgetPasswordController extends Controller
                 403
             );
         }
+    }
+
+    /**
+     * Summary of resetPasswordshow
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|mixed
+     */
+
+    public function resetPasswordshow(Request $request)
+    {
+
+        $resetData = PasswordReset::where('token', $request->token)->get();
+
+        if (isset($resetData) and count($resetData) > 0) {
+            $trainer = Trainer::where('email', $resetData[0]['email'])->first();
+            return view('password.resetPassword')->with('trainer', $trainer);
+
+        } else {
+            return view('errors.404');
+        }
+
+    }
+
+    /**
+     * Summary of resetPassword
+     * @param \Illuminate\Http\Request $request
+     * @return void
+     */
+    public function resetPassword(Request $request)
+    {
+
+        $request->validate([
+            'id' => 'required|',
+            'password' => 'required|string|min:6|confirmed',
+        ]);
+
+        $trainer = Trainer::where('id', $request->id)->first();
+
+        $trainer->password = \Hash::make($request->password);
+
+        $status = $trainer->save();
+
+        session()->flash('status', $status);
+        return redirect()->back();
+
+
+
     }
 
 

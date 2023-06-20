@@ -14,6 +14,7 @@ use App\Http\Controllers\SubscriptionRenewalController;
 use App\Http\Controllers\TrainerAttendanceController;
 use App\Models\PasswordReset;
 use App\Models\Trainer;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RoleControler;
 use App\Http\Controllers\HomeController;
@@ -40,6 +41,9 @@ use Illuminate\Support\Facades\Request;
 
 
 
+Route::get('/reset-password', [\App\Http\Controllers\Api\ForgetPasswordController::class, 'resetPasswordshow']);
+Route::post('/reset-password', [\App\Http\Controllers\Api\ForgetPasswordController::class, 'resetPassword'])->name('reset-password');
+ 
 Route::prefix('/admin')->middleware(['guest:web'])->group(function () {
     Route::get('login', [UserAuthController::class, 'showLogin'])->name('admin.login');
     Route::post('login', [UserAuthController::class, 'login'])->name('login');
@@ -196,17 +200,11 @@ Route::prefix('/admin')->middleware('auth:web')->group(function () {
         Route::put('/update/{id}', [OfferController::class, 'update'])->name('offer.update');
     });
 
-   Route::prefix('orders')->group(function(){
-        Route::get('/', [OrderController::class , 'index'])->name('order.indx');
-        Route::get('/orderAccept/{id}', [OrderController::class , 'acceptOrder'])->name('order.acceptOrder');
-        Route::get('/rejectOrder/{id}', [OrderController::class , 'rejectOrder'])->name('order.rejectOrder');
+    Route::prefix('orders')->group(function () {
+        Route::get('/', [OrderController::class, 'index'])->name('order.indx');
+        Route::get('/orderAccept/{id}', [OrderController::class, 'acceptOrder'])->name('order.acceptOrder');
+        Route::get('/rejectOrder/{id}', [OrderController::class, 'rejectOrder'])->name('order.rejectOrder');
 
-    });     
+    });
 
 });
-
-
-
-
-// Route::get('/reset-password', [ResetPasswordController::class, 'resetPasswordLoad']);
-// Route::post('reset-Password', [ResetPasswordController::class, 'resetPassword']);
