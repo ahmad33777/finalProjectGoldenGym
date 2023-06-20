@@ -97,11 +97,11 @@ class ForgetPasswordController extends Controller
 
     public function resetPasswordshow(Request $request)
     {
-
-        $resetData = PasswordReset::where('token', $request->token)->get();
-
-        if (isset($resetData) and count($resetData) > 0) {
-            $trainer = Trainer::where('email', $resetData[0]['email'])->first();
+        $resetData = DB::table('password_resets')->where('token', $request->token)->first();
+        // $resetData = PasswordReset::where('token', $request->token)->get();
+        $trainer = Trainer::where('email', $resetData->email)->first();
+        if (isset($resetData)) {
+            $trainer = Trainer::where('email', $trainer->email)->first();
             return view('password.resetPassword')->with('trainer', $trainer);
 
         } else {

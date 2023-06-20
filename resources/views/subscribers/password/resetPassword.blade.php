@@ -108,32 +108,31 @@
             </div>
         @endif
     @endif
-    <form action="{{ route('reset-password') }}" method="POST"s style="direction: rtl ; text-align: center">
-        @csrf
-        <div class="center">
-            <h1>GoldenGym</h1>
-            <form action="{{ route('reset-password') }}" method="POST" style="text-align: center">
-                <input type="hidden" name="id" value="{{ $trainer->id }}">
+    <div class="center">
+        <h1>GoldenGym</h1>
+        <form action="{{ route('subscriber.reset-password') }}" method="POST" style="text-align: center">
+            @csrf
+            <input type="hidden" name="id" value="{{ $subscriber->id }}">
 
-                <div class="inputbox">
-                    <input type="password" name="password" id="password" placeholder="كلمة المرورو الجديدة">
-                </div>
-                @error('password')
-                    <p style="color: red ">{{ $message }}</p>
-                @enderror
-                <div class="inputbox">
-                    <input type="password" name="password_confirmation" id="password_confarm"
-                        placeholder="تأكيد كلمة المرور">
-                </div>
-                @error('password_confirmation')
-                    <p style="color: red ">{{ $message }}</p>
-                @enderror
-                <div class="inputbox">
-                    <input type="submit" value="submit">
-                </div>
-            </form>
-        </div>
-    </form>
+            <div class="inputbox">
+                <input type="password" name="password" id="password" placeholder="كلمة المرورو الجديدة">
+            </div>
+            @error('password')
+                <p style="color: red ">{{ $message }}</p>
+            @enderror
+            <div class="inputbox">
+                <input type="password" name="password_confirmation" id="password_confarm"
+                    placeholder="تأكيد كلمة المرور">
+            </div>
+            @error('password_confirmation')
+                <p style="color: red ">{{ $message }}</p>
+            @enderror
+            <div class="inputbox">
+                <input type="submit" value="submit">
+            </div>
+
+        </form>
+    </div>
 
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"
         integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous">

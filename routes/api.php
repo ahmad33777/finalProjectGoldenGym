@@ -42,10 +42,13 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         Route::post('/order', [OrderController::class, 'order']);
 
         Route::post('/myOrders', [OrderController::class, 'showMyOrders']);
-        Route::post('/removeOrder', [OrderController::class ,'cancellingOrder']);
+        Route::post('/removeOrder', [OrderController::class, 'cancellingOrder']);
     });
 
 
 
 
+
 });
+
+Route::post('subscriber/forget-password', [SubscriberController::class, 'forgetPassword']);

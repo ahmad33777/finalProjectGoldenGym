@@ -39,11 +39,16 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Request;
 
 
+Route::get('/subscriber/reset-password', [\App\Http\Controllers\Api\SubscriberController::class, 'resetPasswordshow']);
+Route::post('/subscriber/reset-password', [\App\Http\Controllers\Api\SubscriberController::class, 'resetPassword'])->name('subscriber.reset-password');
+
 
 
 Route::get('/reset-password', [\App\Http\Controllers\Api\ForgetPasswordController::class, 'resetPasswordshow']);
 Route::post('/reset-password', [\App\Http\Controllers\Api\ForgetPasswordController::class, 'resetPassword'])->name('reset-password');
- 
+
+
+
 Route::prefix('/admin')->middleware(['guest:web'])->group(function () {
     Route::get('login', [UserAuthController::class, 'showLogin'])->name('admin.login');
     Route::post('login', [UserAuthController::class, 'login'])->name('login');

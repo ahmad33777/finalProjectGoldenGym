@@ -3,17 +3,23 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Mail\ResetPasswordMail;
 use App\Models\Complaint;
 use App\Models\Notification;
 use App\Models\Offer;
+use App\Models\PasswordReset;
 use App\Models\Rating;
 use App\Models\Subscriber;
 use App\Models\Trainer;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\URL;
 
 class SubscriberController extends Controller
 {
@@ -76,7 +82,7 @@ class SubscriberController extends Controller
 
     }
 
-   
+
     public function changePassword(Request $request)
     {
         $validator = Validator(
@@ -187,6 +193,10 @@ class SubscriberController extends Controller
         }
     }
 
+    /**
+     * Summary of showTrainers
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function showTrainers()
     {
         $trainers = Trainer::select('id', 'name')->get();
@@ -210,6 +220,11 @@ class SubscriberController extends Controller
         }
     }
 
+    /**
+     * Summary of chaneTrainers
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function chaneTrainers(Request $request)
     {
         $validator = Validator(
@@ -261,6 +276,119 @@ class SubscriberController extends Controller
             );
         }
 
+    }
+
+
+
+    /**
+     * Summary of forgetPassword
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function forgetPassword(Request $request)
+    {
+        $validator = validator($request->all(), [
+            'email' => 'required|email',
+        ]);
+
+        try {
+            if (!$validator->fails()) {
+                $subscriber = Subscriber::where('email', $request->email)->get();
+                if (count($subscriber) > 0) {
+
+                    $token = Str::random(40);
+                    $domain = URL::to('/');
+                    $url = $domain . '/subscriber/reset-password?token=' . $token;
+
+                    $data['url'] = $url;
+                    $data['email'] = $request->email;
+                    $data['title'] = 'Password Reset';
+                    $data['body'] = 'من فضلك إضغط على الرابط التالي من أجل إعادة تعين كلمة المرور الخاصة بك';
+                    Mail::to($request->email)->send(new ResetPasswordMail($data));
+                    $dateTime = Carbon::now()->format('Y-m-d H:i:s');
+                    PasswordReset::updateOrCreate(
+                        ['email' => $request->email],
+                        ['token' => $token, 'created_at' => $dateTime],
+                    );
+
+                    return response()->json(
+                        [
+                            'status' => true,
+                            'message' => 'من فضلك افحص البريد الإلكتروني '
+                        ],
+                        200
+                    );
+
+
+                } else {
+                    return response()->json(
+                        [
+                            'status' => false,
+                            'message' => 'المستخدم غير موجود ؟؟'
+                        ],
+                        400
+                    );
+                }
+            } else {
+                return response()->json(
+                    [
+                        'status' => false,
+                        'message' => $validator->getMessageBag()->first(),
+                    ],
+                    400
+                );
+            }
+
+
+        } catch (\Exception $e) {
+            return response()->json(
+                [
+                    'status' => false,
+                    'message' => $e->getMessage(),
+                ],
+                403
+            );
+        }
+    }
+
+
+
+    /**
+     * Summary of resetPasswordshow
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|mixed
+     */
+    public function resetPasswordshow(Request $request)
+    {
+        $resetData = DB::table('password_resets')->where('token', $request->token)->first();
+        $subscriber = Subscriber::where('email', $resetData->email)->first();
+        if (isset($resetData)) {
+            $subscriber = Subscriber::where('email', $resetData->email)->first();
+            return view('subscribers.password.resetPassword')->with('subscriber', $subscriber);
+        } else {
+            return view('errors.404');
+        }
+
+    }
+
+
+    public function resetPassword(Request $request)
+    {
+
+
+         $request->validate([
+            'id' => 'required|',
+            'password' => 'required|string|min:6|confirmed',
+        ]);
+
+        $sub = Subscriber::where('id', $request->id)->first();
+
+        $sub->password = \Hash::make($request->password);
+
+        $status = $sub->save();
+
+        session()->flash('status', $status);
+        return redirect()->back();
     }
 
 
