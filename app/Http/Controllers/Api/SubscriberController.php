@@ -237,7 +237,8 @@ class SubscriberController extends Controller
         try {
             if (!$validator->fails()) {
                 $subscriber = Subscriber::find($request->post('subscriber_id'));
-                $subscriber->trainer_id = $request->post('trainer_id');
+                if($subscriber->trainer_id!=$request->post('trainer_id')){
+                    $subscriber->trainer_id = $request->post('trainer_id');
                 $status = $subscriber->save();
                 if ($status) {
                     return response()->json(
@@ -253,9 +254,19 @@ class SubscriberController extends Controller
                             'status' => false,
                             'message' => 'فشلت العملية '
                         ],
-                        400
+                        200
                     );
                 }
+                }else{
+                    return response()->json(
+                        [
+                            'status' => false,
+                            'message' => 'انت قمت باختيار مدربك ! قم باختيار مدرب أخر'
+                        ],
+                        200
+                    );
+                }
+                
 
             } else {
                 return response()->json(
