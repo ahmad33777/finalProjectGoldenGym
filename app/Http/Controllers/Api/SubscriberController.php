@@ -225,7 +225,7 @@ class SubscriberController extends Controller
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function chaneTrainers(Request $request)
+    public function changeTrainers(Request $request)
     {
         $validator = Validator(
             $request->all(),
@@ -383,7 +383,7 @@ class SubscriberController extends Controller
 
         $sub = Subscriber::where('id', $request->id)->first();
 
-        $sub->password = \Hash::make($request->password);
+        $sub->password = Hash::make($request->password);
 
         $status = $sub->save();
 
