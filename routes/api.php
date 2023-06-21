@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\ForgetPasswordController;
 use App\Http\Controllers\Api\OrderController;
 use App\Http\Controllers\Api\ProdcutController;
 use App\Http\Controllers\Api\RatingController;
+use App\Http\Controllers\Api\SaunaReservationsController;
 use App\Http\Controllers\Api\SubscriberController;
 use App\Http\Controllers\Api\TrainerComplaintController;
 use App\Http\Controllers\Api\TrainerController;
@@ -43,12 +44,17 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         Route::post('/myOrders', [OrderController::class, 'showMyOrders']);
         Route::post('/removeOrder', [OrderController::class, 'cancellingOrder']);
 
- 
+
+        Route::post('/reservation', [SaunaReservationsController::class, 'reservation']);
+        Route::post('/cancellationReservation', [SaunaReservationsController::class, 'cancellationReservation']);
+
+        Route::post('/showReservations', [SaunaReservationsController::class, 'showReservations']);
+
     });
 
 
 
- 
+
 
 
 
