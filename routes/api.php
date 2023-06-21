@@ -36,8 +36,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         Route::get('/showOffers', [SubscriberController::class, 'showOffers']);
         Route::put('/changePassword', [SubscriberController::class, 'changePassword']);
         Route::post('/ratingStore', [SubscriberController::class, 'ratingStore']);
-        Route::get('/trainers', [SubscriberController::class, 'showTrainers']);
-        Route::put('/chaneTrainers', [SubscriberController::class, 'chaneTrainers']);
+        Route::put('/changeTrainers', [SubscriberController::class, 'changeTrainers']);
         Route::get('/products', [ProdcutController::class, 'index']);
         Route::post('/order', [OrderController::class, 'order']);
 
@@ -55,6 +54,9 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
 
 
+});
+Route::prefix('subscribers')->group(function () {
+    Route::get('/trainers', [SubscriberController::class, 'showTrainers']);
 });
 
 Route::post('subscriber/forget-password', [SubscriberController::class, 'forgetPassword']);
