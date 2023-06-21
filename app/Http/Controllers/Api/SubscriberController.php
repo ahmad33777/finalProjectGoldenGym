@@ -372,11 +372,14 @@ class SubscriberController extends Controller
     }
 
 
+    /**
+     * Summary of resetPassword
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\RedirectResponse|mixed
+     */
     public function resetPassword(Request $request)
     {
-
-
-         $request->validate([
+        $request->validate([
             'id' => 'required|',
             'password' => 'required|string|min:6|confirmed',
         ]);
@@ -389,6 +392,46 @@ class SubscriberController extends Controller
 
         session()->flash('status', $status);
         return redirect()->back();
+    }
+
+
+
+
+    /**
+     * Summary of updateProfile
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function updateProfile(Request $request)
+    {
+        $validator = Validator(
+            $request->all(),
+            [
+                'subscriber_id' => 'required|numeric|exists:subscribers,id',
+                'phone' => 'nullable|numeric',
+                'name' => 'nullable|string|min:6',
+            ],
+        );
+        if (!$validator->fails()) {
+            if(isset($subscriber_id)){
+                
+            }            
+
+            return response()->json([
+                'khavdbhjasvb'
+            ]);
+
+        } else {
+            return response()->json(
+                [
+                    'status' => false,
+                    'message' => $validator->getMessageBag()->first()
+                ],
+                200
+            );
+        }
+
+
     }
 
 

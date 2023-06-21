@@ -43,7 +43,13 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
         Route::post('/myOrders', [OrderController::class, 'showMyOrders']);
         Route::post('/removeOrder', [OrderController::class, 'cancellingOrder']);
+
+ 
     });
+
+
+
+ 
 
 
 
