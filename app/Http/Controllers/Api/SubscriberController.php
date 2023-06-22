@@ -52,34 +52,40 @@ class SubscriberController extends Controller
                 200
             );
         }
-
-
     }
 
     // To show all Notifications 
     public function showNotification()
     {
-        $notifications = Notification::where('deleted_at', null)->get();
+        try {
+            $notifications = Notification::orderBy('created_at', 'desc')->get();
 
-        if ($notifications->isEmpty()) {
+            if ($notifications->isEmpty()) {
+                return response()->json(
+                    [
+                        'status' => false,
+                        'message' => 'لا يوجد اشعارات للعرض',
+                    ],
+                    200
+                );
+            } else {
+                return response()->json(
+                    [
+                        'status' => true,
+                        'notifications' => $notifications
+                    ],
+                    200
+                );
+            }
+        } catch (\Exception $e) {
             return response()->json(
                 [
                     'status' => false,
-                    'message' => 'لا يوجد اشعارات للعرض',
-                ],
-                200
-            );
-        } else {
-            return response()->json(
-                [
-                    'status' => true,
-                    'notifications' => $notifications
+                    'message' => $e->getMessage(),
                 ],
                 200
             );
         }
-
-
     }
 
 
@@ -117,7 +123,6 @@ class SubscriberController extends Controller
                         200
                     );
                 }
-
             } else {
                 return response()->json(
                     [
@@ -133,7 +138,6 @@ class SubscriberController extends Controller
                 'message' => $validator->getMessageBag()->first(),
             ], 400);
         }
-
     }
 
 
@@ -179,9 +183,7 @@ class SubscriberController extends Controller
                     ],
                     200
                 );
-
             }
-
         } else {
             return response()->json(
                 [
@@ -237,27 +239,27 @@ class SubscriberController extends Controller
         try {
             if (!$validator->fails()) {
                 $subscriber = Subscriber::find($request->post('subscriber_id'));
-                if($subscriber->trainer_id!=$request->post('trainer_id')){
+                if ($subscriber->trainer_id != $request->post('trainer_id')) {
                     $subscriber->trainer_id = $request->post('trainer_id');
-                $status = $subscriber->save();
-                if ($status) {
-                    return response()->json(
-                        [
-                            'status' => true,
-                            'message' => 'تم تحديث المدرب '
-                        ],
-                        200
-                    );
+                    $status = $subscriber->save();
+                    if ($status) {
+                        return response()->json(
+                            [
+                                'status' => true,
+                                'message' => 'تم تحديث المدرب '
+                            ],
+                            200
+                        );
+                    } else {
+                        return response()->json(
+                            [
+                                'status' => false,
+                                'message' => 'فشلت العملية '
+                            ],
+                            200
+                        );
+                    }
                 } else {
-                    return response()->json(
-                        [
-                            'status' => false,
-                            'message' => 'فشلت العملية '
-                        ],
-                        200
-                    );
-                }
-                }else{
                     return response()->json(
                         [
                             'status' => false,
@@ -266,8 +268,6 @@ class SubscriberController extends Controller
                         200
                     );
                 }
-                
-
             } else {
                 return response()->json(
                     [
@@ -286,7 +286,6 @@ class SubscriberController extends Controller
                 400
             );
         }
-
     }
 
 
@@ -329,8 +328,6 @@ class SubscriberController extends Controller
                         ],
                         200
                     );
-
-
                 } else {
                     return response()->json(
                         [
@@ -349,8 +346,6 @@ class SubscriberController extends Controller
                     400
                 );
             }
-
-
         } catch (\Exception $e) {
             return response()->json(
                 [
@@ -379,7 +374,6 @@ class SubscriberController extends Controller
         } else {
             return view('errors.404');
         }
-
     }
 
 
@@ -424,14 +418,12 @@ class SubscriberController extends Controller
             ],
         );
         if (!$validator->fails()) {
-            if(isset($subscriber_id)){
-                
-            }            
+            if (isset($subscriber_id)) {
+            }
 
             return response()->json([
                 'khavdbhjasvb'
             ]);
-
         } else {
             return response()->json(
                 [
@@ -441,10 +433,5 @@ class SubscriberController extends Controller
                 200
             );
         }
-
-
     }
-
-
-
 }

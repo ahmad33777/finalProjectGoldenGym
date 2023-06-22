@@ -36,7 +36,7 @@ class TrainerAttendanceController extends Controller
                     200
                 );
             } else {
-                return response()->json(['status' => false, 'message' => 'لايوجد حضور وإنصراف لهذا الشهر '], 400);
+                return response()->json(['status' => false, 'message' => 'لايوجد حضور وإنصراف لهذا الشهر '], 200);
             }
         } else {
             return response()->json(
@@ -44,8 +44,6 @@ class TrainerAttendanceController extends Controller
                 400
             );
         }
-
-
     }
 
     public function attendances_store(Request $request)
@@ -100,8 +98,6 @@ class TrainerAttendanceController extends Controller
                         'message' => 'أنت بالفعل قمت بتسجيل حضور لهذا اليوم'
                     ], 200);
                 }
-
-
             } else {
                 return response()->json(
                     [
@@ -120,8 +116,6 @@ class TrainerAttendanceController extends Controller
                 400
             );
         }
-
-
     }
 
     public function departure(Request $request)
@@ -141,15 +135,14 @@ class TrainerAttendanceController extends Controller
             if ($trainer) {
                 if (
                     TrainerAttendance::where('trainer_id', $trainer->id)
-                        ->where('date', $request->date)
-                        ->where(
-                            'leave_time',
+                    ->where('date', $request->date)
+                    ->where(
+                        'leave_time',
 
-                            null
-                        )->first()
+                        null
+                    )->first()
                 ) {
-                    $attendance = TrainerAttendance::
-                        where('trainer_id', $trainer->id)
+                    $attendance = TrainerAttendance::where('trainer_id', $trainer->id)
                         ->where('date', $date)->first();
                     $now = Carbon::now();
                     $present_time = $now->format('H:i:s');
@@ -186,9 +179,6 @@ class TrainerAttendanceController extends Controller
                         200
                     );
                 }
-
-
-
             } else {
                 return response()->json(
                     [
@@ -198,7 +188,6 @@ class TrainerAttendanceController extends Controller
                     200
                 );
             }
-
         } else {
             return response()->json(
                 [
@@ -208,8 +197,5 @@ class TrainerAttendanceController extends Controller
                 200
             );
         }
-
-
-
     }
 }

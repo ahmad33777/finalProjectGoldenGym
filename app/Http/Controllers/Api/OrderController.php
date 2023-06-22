@@ -48,15 +48,9 @@ class OrderController extends Controller
                         'status' => false,
                         'message' => 'فشل ارسال الحجز '
                     ],
-                    401
+                    20
                 );
             }
-
-
-
-
-
-
         } else {
             return response(
                 [
@@ -140,7 +134,7 @@ class OrderController extends Controller
                 return response()->json(
                     [
                         'status' => false,
-                        'message' => 'لا يموجد  حجوزات'
+                        'message' => 'لا يوجد  حجوزات'
                     ],
                     200
                 );
@@ -154,7 +148,7 @@ class OrderController extends Controller
                     'status' => false,
                     'message' => $validator->getMessageBag()->first(),
                 ],
-                200
+                400
             );
 
         }
