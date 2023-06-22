@@ -1,6 +1,7 @@
 <?php
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ComplaintController;
+use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\FacebookController;
 use App\Http\Controllers\FinancialController;
 use App\Http\Controllers\IncomingController;
@@ -209,6 +210,12 @@ Route::prefix('/admin')->middleware('auth:web')->group(function () {
         Route::get('/', [OrderController::class, 'index'])->name('order.indx');
         Route::get('/orderAccept/{id}', [OrderController::class, 'acceptOrder'])->name('order.acceptOrder');
         Route::get('/rejectOrder/{id}', [OrderController::class, 'rejectOrder'])->name('order.rejectOrder');
+
+    });
+
+    Route::prefix('/expenses')->group(function () {
+        Route::get('/', [ExpenseController::class, 'index'])->name('expenses.index');
+        Route::post('/store', [ExpenseController::class, 'store'])->name('expenses.store');
 
     });
 

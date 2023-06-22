@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Complaint;
+use App\Models\Expense;
 use App\Models\Subscriber;
 use App\Models\User;
 use App\Models\Trainer;
@@ -22,8 +23,8 @@ class HomeController extends Controller
 
         $currentDate = date('Y-m-d');
 
-        $dailyExpenses = Incoming::where('incoming_date', $currentDate)->sum('incoming_value');
-
+        $dailyIncoming = Incoming::where('incoming_date', $currentDate)->sum('incoming_value');
+        $dailyExpenses = Expense::where('date', $currentDate)->sum('amount');
         // chart one subs
         $subscribers = Subscriber::selectRaw('MONTH(created_at) as month, COUNT(*) as count')
             ->whereYear('created_at', date('Y'))
@@ -64,10 +65,11 @@ class HomeController extends Controller
             'employees' => $employees,
             'trainers' => $trainers,
             'incomings' => $incomings,
-            'dailyExpenses' => $dailyExpenses,
+            'dailyIncoming' => $dailyIncoming,
             'labels' => $labels,
             'datasets' => $datasets,
             'datasetIncomming' => $datasetIncomming,
+            'dailyExpenses' => $dailyExpenses
 
         ]);
 

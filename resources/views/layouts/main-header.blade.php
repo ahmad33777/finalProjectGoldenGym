@@ -50,6 +50,15 @@
                                 style="position :  absolute ; z-index:2; padding-top:20px  ;">{{ $numUnreadComplaints }}</span>
                         @endif
                     @endrole
+                    @php
+                        $numOrder = App\Models\Order::where('status', null)->count();
+                    @endphp
+                    @if ($numOrder != 0)
+                            <span
+                                class="badge bg-danger"style="position :  absolute ; z-index:2; padding-top:20px  ; margin-left:10px ">{{ $numOrder }}
+                                طلبات</span>
+                    @endif
+
 
                     <a class="new nav-link" href="#"><i class="fas fa-bell"></i></a>
 
