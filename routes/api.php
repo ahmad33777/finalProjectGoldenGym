@@ -34,11 +34,11 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
     Route::prefix('subscribers')->group(function () {
         Route::get('/showNotification', [SubscriberController::class, 'showNotification']);
-        Route::get('/showOffers', [SubscriberController::class, 'showOffers']);
         Route::put('/changePassword', [SubscriberController::class, 'changePassword']);
         Route::post('/ratingStore', [SubscriberController::class, 'ratingStore']);
         Route::put('/changeTrainers', [SubscriberController::class, 'changeTrainers']);
-        Route::get('/products', [ProdcutController::class, 'index']);
+         Route::get('/proteins', [ProdcutController::class, 'getAllProteins']);
+        Route::get('/equipments', [ProdcutController::class, 'getAllSportsEquipment']);
         Route::post('/order', [OrderController::class, 'order']);
 
         Route::post('/myOrders', [OrderController::class, 'showMyOrders']);
@@ -63,6 +63,11 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 });
 Route::prefix('subscribers')->group(function () {
     Route::get('/trainers', [SubscriberController::class, 'showTrainers']);
+});
+
+Route::prefix('subscribers')->group(function () {
+    Route::get('/showOffers', [SubscriberController::class, 'showOffers']);
+
 });
 
 Route::post('subscriber/forget-password', [SubscriberController::class, 'forgetPassword']);

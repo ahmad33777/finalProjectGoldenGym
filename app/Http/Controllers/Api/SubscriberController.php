@@ -215,7 +215,7 @@ class SubscriberController extends Controller
                     'status' => false,
                     'message' => 'لايوجد مدربين للعرض حالياً'
                 ],
-                400
+                200
             );
         }
     }
@@ -335,9 +335,9 @@ class SubscriberController extends Controller
                     return response()->json(
                         [
                             'status' => false,
-                            'message' => 'المستخدم غير موجود ؟؟'
+                            'message' => 'المستخدم غير موجود'
                         ],
-                        400
+                        200
                     );
                 }
             } else {

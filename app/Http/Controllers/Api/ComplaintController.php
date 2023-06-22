@@ -42,18 +42,18 @@ class ComplaintController extends Controller
                   return response()->json(
                     [
                         'status' => true,
-                        'message' => 'تمت إضافة الشكوى بنجاح . المسؤال المختص ',
+                        'message' => 'تم إرسال الشكوى للمسئول المختص',
                     ],
-                    400
+                    201
                 );
 
             } else {
                 return response()->json(
                     [
                         'status' => false,
-                        'message' => 'حدث خطأ يرجى المحاولة في وقت أخر',
+                        'message' => 'حدث خطأ يرجى المحاولة في وقت لاحق',
                     ],
-                    400
+                    200
                 );
             }
 
@@ -64,7 +64,7 @@ class ComplaintController extends Controller
                     'error' => 'Validation failed',
                     'errors' => $validator->getMessageBag()->first(),
                 ],
-                422
+                400
             );
         }
 
