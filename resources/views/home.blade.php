@@ -20,6 +20,17 @@
     <!-- breadcrumb -->
 @endsection
 @section('content')
+    @if (Session()->has('status'))
+        @if (session('status') == true)
+            <div class="alert fw-bold" role="alert" style="background-color: #0d9e03; color: white ; border-radius:15px;">
+                تم اضافة المصروفات
+            </div>
+        @else
+            <div class="alert fw-bold" role="alert" style="background-color: #da1313; color: white ; border-radius:15px;">
+                فشلت العملية
+            </div>
+        @endif
+    @endif
     <!-- row -->
     <div class="row row-sm">
         @role(['admin', 'accountant'])
@@ -98,6 +109,7 @@
                 </div>
             </div>
         @endrole
+
         @role(['admin'])
             <div class="col-lg-6 col-xl-3 col-md-6 col-12">
                 <div class="card bg-warning-gradient text-white">
@@ -120,7 +132,26 @@
                 </div>
             </div>
         @endrole
+
         @role(['admin', 'accountant'])
+            <div class="col-sm-12 col-lg-6 col-xl-3">
+                <div class="card card-img-holder">
+                    <div class="card-body list-icons">
+                        <div class="clearfix">
+                            <div class="float-right text-right">
+                                <p class="card-text text-muted mb-1">الواردات اليومية</p>
+                                <h3>{{ $dailyIncoming }} ₪.</h3>
+                            </div>
+                            <div class="float-left  mt-2">
+                                <span class="text-primary ">
+                                    <i class="si si-credit-card tx-30"></i>
+                                </span>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
             <div class="col-sm-12 col-lg-6 col-xl-3">
                 <div class="card card-img-holder">
                     <div class="card-body list-icons">
@@ -139,17 +170,18 @@
                     </div>
                 </div>
             </div>
+
             <div class="col-sm-12 col-lg-6 col-xl-3">
                 <div class="card card-img-holder">
                     <div class="card-body list-icons">
                         <div class="clearfix">
                             <div class="float-right text-right">
-                                <p class="card-text text-muted mb-1">الصادرات اليومية</p>
-                                <h3> </h3>
+                                <p class="card-text text-muted mb-1" style="color: red">عدد المشتركين الفعالين</p>
+                                <h3>{{ $dailyExpenses }} ₪.</h3>
                             </div>
                             <div class="float-left  mt-2">
                                 <span class="text-primary ">
-                                    <i class="si si-credit-card tx-30"></i>
+                                    <i class="fa fa-mobile tx-30"></i>
                                 </span>
                             </div>
                         </div>
@@ -158,8 +190,6 @@
                 </div>
             </div>
         @endrole
-
-
 
         @role('vendor')
             <div class="col-xl-3 col-lg-6 col-sm-6 col-md-6">
@@ -196,7 +226,7 @@
     @role(['admin'])
         <div class="row row-sm">
             {{-- احصائيات المشتركين السنوبية --}}
-            <div class="col-sm-12 col-md-4">
+            <div class="col-sm-12 col-md-6">
                 <div class="card">
                     <div class="card-body">
                         <div class="main-content-label">
@@ -210,7 +240,7 @@
                 </div>
             </div>
             {{-- احصائيات الواردات --}}
-            <div class="col-sm-12 col-md-4">
+            <div class="col-sm-12 col-md-6">
                 <div class="card">
                     <div class="card-body">
                         <div class="main-content-label">
@@ -226,7 +256,7 @@
             </div>
 
             {{-- add new incomming  --}}
-            <div class="col-sm-12 col-md-4  " style=" border-radius:8px ; color: white ; ">
+            <div class="col-sm-12 col-md-6  " style=" border-radius:8px ; color: white ; ">
                 <div class="card">
                     <div class="card-body" style="border-radius:8px ">
                         <div class="main-content-label">
@@ -234,20 +264,35 @@
                         </div>
                         <p class="mg-b-20" style="color:#000">
                             اضافة مصاريف تشغيلية جديدة
-                           </p>
-                        <form>
+                        </p>
+                        <form action="{{ route('expenses.store') }}" method="post">
+                            @csrf
                             <input list="types" placeholder="ادخل نوع الصادر " class="form-control" id=""
-                                name="" style=" border: 1px solid #1196db">
+                                name="type" id="type" style=" border: 1px solid #1196db">
                             <datalist id="types">
                                 <option value="مصاريف تشغيلية"> مصاريف تشغيلية</option>
+                                <option value="حجوزات ساونا">حجوزات ساونا</option>
+                                <option value="بيع منتج">بيع منتج</option>
                                 <option value="مصاريف شحن الكهرباء">مصاريف شحن الكهرباء</option>
                             </datalist>
+                            @error('type')
+                                <p style="color: red ">{{ $message }}</p>
+                            @enderror
                             <br>
                             <input type="number" class="form-control" min="0" placeholder="ادخل قيمة الصادر بالشيكل"
-                                style=" border: 1px solid #1196db; margin-bottom: 17px" name="" id="incoming_value">
-                            <br>
+                                style=" border: 1px solid #1196db; margin-bottom: 17px" name="amount" id="amount">
+
+                            @error('amount')
+                                <p style="color: red ">{{ $message }}</p>
+                            @enderror
+                            <input type="text" class="form-control" min="0" placeholder="ملاحظات"
+                                style=" border: 1px solid #1196db; margin-bottom: 17px" name="note" id="note">
+
+                            @error('note')
+                                <p style="color: red ">{{ $message }}</p>
+                            @enderror
                             <div style="text-align: center">
-                                <button type="button" class="btn btn-warning">تصدير وارد</button>
+                                <button type="submit" class="btn btn-warning">تصدير وارد</button>
                             </div>
                         </form>
                     </div>

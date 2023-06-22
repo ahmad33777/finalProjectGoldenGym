@@ -171,10 +171,6 @@
                             <li>
                                 <a class="slide-item" href="{{ route('attendance.index') }}">تسجيل حضور وإنصراف</a>
                             </li>
-                            {{-- <li>
-                                <a class="slide-item" href="{{ route('sheet-report', Auth::user()->id) }}">تقرير حضور
-                                    وإنصراف</a>
-                            </li> --}}
                         @endrole
 
                         @role('admin')
@@ -229,7 +225,18 @@
                             <a class="slide-item" href="{{ route('offer.index') }}">قائمة العروض الجديدة</a>
                         </li>
                         <li>
-                            <a class="slide-item" href="{{ route('order.indx') }}">الطلبات</a>
+                            <a class="slide-item" href="{{ route('order.indx') }}">الطلبات
+                                @php
+                                    $numOrder = App\Models\Order::where('status', null)->count();
+                                @endphp
+                                @if ($numOrder != 0)
+                                &nbsp; <span class="badge bg-danger"
+                                style="color: white">{{ $numOrder ?? '' }}&nbsp;</span>
+                                @endif
+                               
+
+                            </a>
+
                         </li>
                     </ul>
                 </li>
@@ -324,7 +331,7 @@
                     </a>
                     <ul class="slide-menu">
                         <li>
-                            <a class="slide-item" href="#">قائمة الصادرات</a>
+                            <a class="slide-item" href="{{ route('expenses.index') }}">قائمة الصادرات</a>
                         </li>
                         <li>
                             <a class="slide-item" href="{{ route('incomings.index') }}">قائمة الواردات</a>
