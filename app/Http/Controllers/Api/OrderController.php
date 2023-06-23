@@ -32,7 +32,7 @@ class OrderController extends Controller
             $newOrder->subscriber_id = $subscriber_id;
             $newOrder->product_id = $product_id;
             $newOrder->order_date = $currentDate;
-            $newOrder->status=null;
+            $newOrder->status=0;
 
             $status = $newOrder->save();
             if ($status) {

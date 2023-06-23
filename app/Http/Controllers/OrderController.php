@@ -13,7 +13,7 @@ class OrderController extends Controller
     {
 
         $orders = Order::where('deleted_at', null)
-            ->where('status', null)
+            ->where('status', 0)
             ->get();
         return view('orders.index', compact('orders'));
     }
@@ -22,7 +22,7 @@ class OrderController extends Controller
     public function acceptOrder($id)
     {
         $oredr = Order::find($id);
-        $oredr->status = true;
+        $oredr->status = 1;
         $status = $oredr->save();
         session()->flash('status', $status);
         return redirect()->back();
@@ -32,7 +32,7 @@ class OrderController extends Controller
     public function rejectOrder($id)
     {
         $oredr = Order::find($id);
-        $oredr->status = false;
+        $oredr->status = -1;
         $status = $oredr->save();
         session()->flash('rejectstatus', $status);
         return redirect()->back();
