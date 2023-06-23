@@ -21,8 +21,10 @@ class SaunaReservationsController extends Controller
             $request->all(),
             [
                 'subscriber_id' => 'required|numeric|exists:subscribers,id',
-                'booking_date' => 'required|date',
-                'start_time' => 'required|date_format:H:i',
+                'booking_date' => 'required',
+                // |date
+                'start_time' => 'required',
+                // |date_format:H:i
             ],
         );
         if (!$validator->fails()) {
