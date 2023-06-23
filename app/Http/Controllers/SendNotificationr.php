@@ -30,7 +30,7 @@ class SendNotificationr extends Controller
                 'title.required' => 'هذا الحقل مطلوب',
                 'title.string' => 'يجب أن يكون نص',
                 'body.required' => 'هذا الحقل مطلوب',
-                'body.string' => 'يجب أن يكون نص'
+                'body.string' => 'يجب أن يكون نص للإشعار'
             ]
         );
 
@@ -49,7 +49,6 @@ class SendNotificationr extends Controller
                         ]
                     );
                 }
-    
             }
         }
        
