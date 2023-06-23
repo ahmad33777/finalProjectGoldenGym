@@ -35,7 +35,7 @@ class TrainerController extends Controller
                     return response()->json(
                         [
                             'status' => true,
-                            'message' => 'تم تحديث كلمة المرورو بنجاح'
+                            'message' => 'تم تحديث كلمة المرور بنجاح'
                         ],
                         200
                     );
@@ -73,11 +73,11 @@ class TrainerController extends Controller
     {
         try {
             $notifications = Notification::orderBy('created_at', 'desc')->get();
-            if (!$notifications) {
+            if ($notifications->isEmpty()) {
                 return response()->json(
                     [
                         'status' => false,
-                        'message' => "لا يوجد إشعارات"
+                        'message' => "لا يوجد إشعارات للعرض"
                     ],
                     200
                 );

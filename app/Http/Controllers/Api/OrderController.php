@@ -38,7 +38,7 @@ class OrderController extends Controller
                 return response()->json(
                     [
                         'status' => true,
-                        'message' => 'تم ارسال الحجز بنجاح'
+                        'message' => 'تم ارسال طلب الحجز بنجاح'
                     ],
                     201
                 );
@@ -46,17 +46,11 @@ class OrderController extends Controller
                 return response()->json(
                     [
                         'status' => false,
-                        'message' => 'فشل ارسال الحجز '
+                        'message' => 'فشل إراسال طلب الحجز '
                     ],
-                    401
+                    20
                 );
             }
-
-
-
-
-
-
         } else {
             return response(
                 [
@@ -85,7 +79,7 @@ class OrderController extends Controller
                 return response()->json(
                     [
                         'status' => true,
-                        'message' => 'تم التراجع عن حجز المنتج'
+                        'message' => 'تم التراجع عن طلب حجز المنتج'
                     ],
                     200
                 );
@@ -93,7 +87,7 @@ class OrderController extends Controller
                 return response()->json(
                     [
                         'status' => false,
-                        'message' => 'فشل التراجع عن حجز المنتج'
+                        'message' => 'فشل التراجع عن طلب حجز المنتج'
                     ],
                     200
                 );
@@ -140,7 +134,7 @@ class OrderController extends Controller
                 return response()->json(
                     [
                         'status' => false,
-                        'message' => 'لا يموجد  حجوزات'
+                        'message' => 'لا يوجد طلبات حجز لأي من منتجاتنا'
                     ],
                     200
                 );
@@ -154,7 +148,7 @@ class OrderController extends Controller
                     'status' => false,
                     'message' => $validator->getMessageBag()->first(),
                 ],
-                200
+                400
             );
 
         }

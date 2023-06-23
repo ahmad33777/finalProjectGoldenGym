@@ -33,6 +33,7 @@ class Subscriber extends Authenticatable
             ->withPivot('id')
             ->withPivot('status')
             ->where('orders.deleted_at', null);
+            //,"status",0
          
     }
 

@@ -35,7 +35,7 @@ class RatingController extends Controller
             } else {
                 return response()->json(
                     [
-                        'sattus' => false,
+                        'status' => false,
                         'message' => 'لا يموجد تقيمات إلى هذه اللحظة من قبل المشتركين'
                     ],
                     400

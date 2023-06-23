@@ -10,10 +10,10 @@ use Illuminate\Support\Facades\Storage;
 class ProdcutController extends Controller
 {
     //
-    public function index()
+    public function getAllProteins()
     {
 
-        $products = Product::all();
+        $products = Product::Where("category_id",1)->get();
         foreach ($products as $product) {
             $logo_link = Storage::url($product->image);
             $product->image = $logo_link;
@@ -22,7 +22,7 @@ class ProdcutController extends Controller
             return response()->json(
                 [
                     'status' => true,
-                    'products' => $products
+                    'protins' => $products
                 ],
                 200
             );
@@ -30,9 +30,36 @@ class ProdcutController extends Controller
             return response()->json(
                 [
                     'status' => false,
-                    'message' => 'لايوجد  منتجات  للعرض'
+                    'message' => 'لايوجد  بروتينات  للعرض'
                 ],
-                400
+                200
+            );
+        }
+    }
+
+    public function getAllSportsEquipment()
+    {
+
+        $products = Product::Where("category_id",2)->get();
+        foreach ($products as $product) {
+            $logo_link = Storage::url($product->image);
+            $product->image = $logo_link;
+        }
+        if (!$products->isEmpty()) {
+            return response()->json(
+                [
+                    'status' => true,
+                    'Sports equipment' => $products
+                ],
+                200
+            );
+        } else {
+            return response()->json(
+                [
+                    'status' => false,
+                    'message' => 'لايوجد معدات ومستلزمات رياضية للعرض'
+                ],
+                200
             );
         }
     }
