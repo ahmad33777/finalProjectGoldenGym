@@ -30,11 +30,12 @@ class SaunaReservationsController extends Controller
         if (!$validator->fails()) {
             $subscriber_id = $request->post('subscriber_id');
             $booking_date = $request->post('booking_date');
-            $start_time = $request->post('start_time');
+            $start_time = $request->post('start_time'); // string time
+
             $timestamp = strtotime($start_time);
             $newTimestamp = $timestamp + (60 * 60); // Add one hour in seconds
             $end_time = date("H:i", $newTimestamp);
-
+           
             // عدد الحجوزات الموجودة
             $existingReservationsCount = SaunaReservations::
                 where('booking_date', $booking_date)
