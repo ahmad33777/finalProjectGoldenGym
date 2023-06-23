@@ -103,6 +103,7 @@ class OfferController extends Controller
         $newOffer->offer_end = $request->post('offer_end', null);
         $newOffer->description = $request->post('offer_description');
         $newOffer->user_id = \Auth::user()->id;
+        
         if ($request->hasFile('offer_image')) {
             $image = $request->file('offer_image');
             $path = 'uplodes/offers/images/';
@@ -110,7 +111,6 @@ class OfferController extends Controller
             Storage::disk('local')->put($path . $name, file_get_contents($image));
             $newOffer->image = $path . $name;
         }
-
         $status = $newOffer->save();
         session()->flash('updateStatus', $status);
         return redirect()->route('offer.index');

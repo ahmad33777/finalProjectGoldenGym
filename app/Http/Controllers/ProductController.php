@@ -90,12 +90,17 @@ class ProductController extends Controller
         if ($request->expiry_date) {
             $product->expiry_date = $request->expiry_date;
         }
+        $oldeImage = $product->image;
         if ($request->hasFile('image')) {
             $image = $request->file('image');
             $path = 'uplodes/products/images/';
             $name = time() + rand(1, 1000000000) . '.' . $image->getClientOriginalExtension();
             Storage::disk('local')->put($path . $name, file_get_contents($image));
             $product->image = $path . $name;
+            
+            Storage::disk('local')->delete($oldeImage);
+
+            
         }
 
         if ($request->description) {
@@ -166,11 +171,11 @@ class ProductController extends Controller
             $products = Product::with('category')
                 ->where('products.name', 'LIKE', "%{$search}%")
                 ->orWhereHas('category', function ($query) use ($search) {
-                        $query->where('categories.name', 'like', '%'.$search.'%');
-                    })
+                    $query->where('categories.name', 'like', '%' . $search . '%');
+                })
                 ->get();
 
-                foreach ($products as $product) {
+            foreach ($products as $product) {
                 $logo_link = Storage::url($product->image);
                 $product->image = $logo_link;
             }

@@ -22,7 +22,7 @@
 @section('content')
     @if (Session()->has('statusDisCount'))
         @if (session('statusDisCount') == true)
-            <div class="alert fw-bold" role="alert" style="background-color: #14628c; color: white ; border-radius:15px;">
+            <div class="alert fw-bold" role="alert" style="background-color: #4fc80d; color: white ; border-radius:15px;">
                 تمت اضافة الخصم بنجاح
             </div>
         @else
