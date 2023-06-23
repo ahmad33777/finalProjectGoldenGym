@@ -1,5 +1,6 @@
 <?php
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\ForgetPasswordController;
 use App\Http\Controllers\Api\OrderController;
 use App\Http\Controllers\Api\ProdcutController;
@@ -37,8 +38,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         Route::put('/changePassword', [SubscriberController::class, 'changePassword']);
         Route::post('/ratingStore', [SubscriberController::class, 'ratingStore']);
         Route::put('/changeTrainers', [SubscriberController::class, 'changeTrainers']);
-         Route::get('/proteins', [ProdcutController::class, 'getAllProteins']);
-        Route::get('/equipments', [ProdcutController::class, 'getAllSportsEquipment']);
+
         Route::post('/order', [OrderController::class, 'order']);
 
         Route::post('/myOrders', [OrderController::class, 'showMyOrders']);
@@ -47,10 +47,12 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
         Route::post('/reservation', [SaunaReservationsController::class, 'reservation']);
         Route::post('/cancellationReservation', [SaunaReservationsController::class, 'cancellationReservation']);
-
         Route::post('/showReservations', [SaunaReservationsController::class, 'showReservations']);
 
     });
+
+
+
 
 
 
@@ -67,6 +69,8 @@ Route::prefix('subscribers')->group(function () {
 
 Route::prefix('subscribers')->group(function () {
     Route::get('/showOffers', [SubscriberController::class, 'showOffers']);
+    Route::get('/categories', [CategoryController::class, 'showCategories']);  
+    Route::post('/products',[ProdcutController::class , 'showProducts']);
 
 });
 

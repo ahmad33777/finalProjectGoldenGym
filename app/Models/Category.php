@@ -12,6 +12,11 @@ class Category extends Model
 
     use HasFactory;
     use SoftDeletes;
+    protected $hidden = [
+        'updated_at',
+        'created_at',
+        'deleted_at',
+    ];
 
     public function products()
     {

@@ -9,61 +9,55 @@ use Illuminate\Support\Facades\Storage;
 
 class ProdcutController extends Controller
 {
-    //
-    public function getAllProteins()
-    {
-
-        $products = Product::Where("category_id",1)->get();
-        foreach ($products as $product) {
-            $logo_link = Storage::url($product->image);
-            $product->image = $logo_link;
-        }
-        if (!$products->isEmpty()) {
-            return response()->json(
-                [
-                    'status' => true,
-                    'protins' => $products
-                ],
-                200
-            );
-        } else {
-            return response()->json(
-                [
-                    'status' => false,
-                    'message' => 'لايوجد  بروتينات  للعرض'
-                ],
-                200
-            );
-        }
-    }
-
-    public function getAllSportsEquipment()
-    {
-
-        $products = Product::Where("category_id",2)->get();
-        foreach ($products as $product) {
-            $logo_link = Storage::url($product->image);
-            $product->image = $logo_link;
-        }
-        if (!$products->isEmpty()) {
-            return response()->json(
-                [
-                    'status' => true,
-                    'Sports equipment' => $products
-                ],
-                200
-            );
-        } else {
-            return response()->json(
-                [
-                    'status' => false,
-                    'message' => 'لايوجد معدات ومستلزمات رياضية للعرض'
-                ],
-                200
-            );
-        }
-    }
-
+     
 
     
+    public function showProducts(Request $request)
+    {
+        $validator = Validator(
+            $request->all(),
+            [
+                'category_id' => 'required|numeric',
+            ],
+        );
+
+        if(!$validator->fails()){
+            $products =  Product::where('category_id', $request->post('category_id'))->get();
+            foreach ($products as $product) {
+                $logo_link = Storage::url($product->image);
+                $product->image = $logo_link;
+            }
+              if($products->isEmpty()){
+                return response()->json(
+                    [
+                        'status'=>false,
+                        'message'=>'لا يوجد منتجات للعرض'
+                    ],200
+                   ); 
+              }else{
+                return response()->json(
+                    [
+                        'status'=>true,
+                        'products'=>$product
+                    ],200
+                   ); 
+                
+              }
+                
+        }else{
+            return response()->json(
+                [
+                    'status'=>false,
+                    'message'=>$validator->getMessageBag()->first(),
+                ],
+            );
+            
+        }
+
+        
+
+    }
+
+
+
 }
