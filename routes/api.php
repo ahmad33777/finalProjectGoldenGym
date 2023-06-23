@@ -49,6 +49,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         Route::post('/cancellationReservation', [SaunaReservationsController::class, 'cancellationReservation']);
         Route::post('/showReservations', [SaunaReservationsController::class, 'showReservations']);
 
+        Route::put('/updatePhone', [SubscriberController::class, 'updatePhone']);
     });
 
 
@@ -69,8 +70,8 @@ Route::prefix('subscribers')->group(function () {
 
 Route::prefix('subscribers')->group(function () {
     Route::get('/showOffers', [SubscriberController::class, 'showOffers']);
-    Route::get('/categories', [CategoryController::class, 'showCategories']);  
-    Route::post('/products',[ProdcutController::class , 'showProducts']);
+    Route::get('/categories', [CategoryController::class, 'showCategories']);
+    Route::post('/products', [ProdcutController::class, 'showProducts']);
 
 });
 

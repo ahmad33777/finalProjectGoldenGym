@@ -407,28 +407,54 @@ class SubscriberController extends Controller
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function updateProfile(Request $request)
+    public function updatePhone(Request $request)
     {
         $validator = Validator(
             $request->all(),
             [
                 'subscriber_id' => 'required|numeric|exists:subscribers,id',
-                'phone' => 'nullable|numeric',
-                'name' => 'nullable|string|min:6',
-            ],
+                'new_phone' => 'required|numeric|min:10',
+            ]
         );
-        if (!$validator->fails()) {
-            if (isset($subscriber_id)) {
-            }
 
-            return response()->json([
-                'khavdbhjasvb'
-            ]);
+        if (!$validator->fails()) {
+            $subscriber = Subscriber::where('id', $request->post('subscriber_id'))->first();
+            if (is_null($subscriber)) {
+                return response()->json(
+                    [
+                        'status' => false,
+                        'messgae' => 'غير مصرح  بالدخول'
+                    ],
+                    200
+                );
+            } else {
+                $subscriber->phone = $request->post('new_phone');
+                $status = $subscriber->save();
+                if ($status) {
+                    return response()->json(
+                        [
+                            'status' => true,
+                            'message' => 'تم التحديث بنجاح',
+                        ],
+                        200
+                    );
+                } else {
+                    return response()->json(
+                        [
+                            'status' => false,
+                            'message' => 'للأسف  لم يتم تحديث رقم الهاتف !!'
+                        ],
+                        200
+                    );
+                }
+
+
+            }
         } else {
             return response()->json(
                 [
                     'status' => false,
-                    'message' => $validator->getMessageBag()->first()
+                    'message' => 'من فضلك تأكد من البيانات المدخلة '
                 ],
                 200
             );
