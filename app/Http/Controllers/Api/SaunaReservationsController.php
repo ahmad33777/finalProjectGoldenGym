@@ -21,7 +21,7 @@ class SaunaReservationsController extends Controller
             $request->all(),
             [
                 'subscriber_id' => 'required|numeric|exists:subscribers,id',
-                'booking_date' => 'required',
+                'booking_date' => 'required|date',
                 // |date
                 'start_time' => 'required',
                 // |date_format:H:i
@@ -77,39 +77,26 @@ class SaunaReservationsController extends Controller
         $validator = Validator(
             $request->all(),
             [
-                'subscriber_id' => 'required|numeric|',
-                'reservation_id' => 'required|numeric|',
+                'subscriber_id' => 'required|numeric|exists:sauna_reservations,subscriber_id',
+                'reservation_id' => 'required|numeric|exists:sauna_reservations,id',
             ],
         );
-
         if (!$validator->fails()) {
             $saunaReservations = SaunaReservations::
                 where('id', $request->post('reservation_id'))
                 ->where('subscriber_id', $request->post('subscriber_id'))
                 ->where('deleted_at', null)
                 ->first();
-            if (isset($saunaReservations)) {
-                $saunaReservations->deleted_at = now()->format('Y-m-d H:i:s');
-                $status = $saunaReservations->save();
-                if ($status ?? false) {
-                    return response()->json(['status' => true, 'message' => 'تم إلغاء  الحجز'], 200);
-                } else {
-                    return response()->json(['status' => false, 'message' => 'حاول مرة اخرى'], 200);
-                }
+            $saunaReservations->deleted_at = now()->format('Y-m-d H:i:s');
+            $status = $saunaReservations->save();
+            if ($status ?? false) {
+                return response()->json(['status' => true, 'message' => 'تم إلغاء  الحجز'], 200);
             } else {
-                return response()->json(
-                    [
-                        'status' => false,
-                        'message' => 'لا يوجد حجز للحذف'
-                    ],
-                    200
-                );
+                return response()->json(['status' => false, 'message' => 'حاول مرة اخرى'], 200);
             }
-
         } else {
             return response()->json(['status' => false, 'message' => $validator->getMessageBag()->first()], 400);
         }
-
     }
     // دالة عرض الحجوزات 
     public function showReservations(Request $request)
