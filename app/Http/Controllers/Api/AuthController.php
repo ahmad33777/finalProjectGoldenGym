@@ -16,6 +16,11 @@ class AuthController extends Controller
     //
 
 
+    /**
+     * Summary of login
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function login(Request $request)
     {
         $validator = validator($request->all(), [

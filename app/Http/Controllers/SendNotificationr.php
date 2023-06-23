@@ -55,21 +55,18 @@ class SendNotificationr extends Controller
 
 
         $subscribers = Subscriber::all();
-        if(!$subscribers->isEmpty()){
-            foreach ($subscribers as $subscriber) {
-                if ($subscriber->fcm_token !== null) {
-                    FCMService::send(
-                        $subscriber->fcm_token,
-                        [
-                            'title' => $title,
-                            'body' => $body,
-                        ]
-                    );
-                }
-    
+        foreach ($subscribers as $subscriber) {
+            if ($subscriber->fcm_token !== null) {
+                FCMService::send(
+                    $subscriber->fcm_token,
+                    [
+                        'title' => $title,
+                        'body' => $body,
+                    ]
+                );
             }
+
         }
-      
 
         // Sore  notification to notification  table of db
 
