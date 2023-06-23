@@ -54,7 +54,7 @@ class SendNotificationr extends Controller
 
         $subscribers = Subscriber::all();
         foreach ($subscribers as $subscriber) {
-            if ($trainer->fcm_token !== null) {
+            if ($subscriber->fcm_token !== null) {
                 FCMService::send(
                     $subscriber->fcm_token,
                     [

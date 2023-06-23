@@ -23,19 +23,21 @@ class SaunaReservationsController extends Controller
                 'subscriber_id' => 'required|numeric|exists:subscribers,id',
                 'booking_date' => 'required|date',
                 'start_time' => 'required|date_format:H:i',
-                'end_time' => 'required|date_format:H:i',
             ],
         );
         if (!$validator->fails()) {
             $subscriber_id = $request->post('subscriber_id');
-            $start_time = $request->post('start_time');
-            $end_time = $request->post('end_time');
             $booking_date = $request->post('booking_date');
+            $start_time = $request->post('start_time');
+            $timestamp = strtotime($start_time);
+            $newTimestamp = $timestamp + (60 * 60); // Add one hour in seconds
+            $end_time = date("H:i", $newTimestamp);
+
             // عدد الحجوزات الموجودة
             $existingReservationsCount = SaunaReservations::
                 where('booking_date', $booking_date)
                 ->where('start_time', '>=', $request->post('start_time'))
-                ->where('end_time', '<=', $request->post('end_time'))
+                ->where('end_time', '<=', $end_time)
                 ->where('deleted_at', null)
                 ->count();
 
@@ -104,12 +106,12 @@ class SaunaReservationsController extends Controller
                 ->where('deleted_at', null)
                 ->get();
 
-                if(!$saunaReservations->isEmpty()){
-                    return response()->json(['status' => true, 'saunaReservations' => $saunaReservations], 200);
-                }else{
-                    return response()->json(['status' => false, "message"=>"لا يوجد حجوزات ساونا لعرضها"], 200);
+            if (!$saunaReservations->isEmpty()) {
+                return response()->json(['status' => true, 'saunaReservations' => $saunaReservations], 200);
+            } else {
+                return response()->json(['status' => false, "message" => "لا يوجد حجوزات ساونا لعرضها"], 200);
 
-                }
+            }
 
         } else {
             return response()->json(['status' => false, 'message' => $validator->getMessageBag()->first()], 400);
