@@ -8,6 +8,8 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
+use function PHPUnit\Framework\isEmpty;
+
 class SaunaReservationsController extends Controller
 {
     public $maximumReservations = 10; // Maximum number of reservations allowed
@@ -102,7 +104,13 @@ class SaunaReservationsController extends Controller
                 ->where('deleted_at', null)
                 ->get();
 
-            return response()->json(['status' => true, 'saunaReservations' => $saunaReservations], 200);
+                if(!$saunaReservations->isEmpty()){
+                    return response()->json(['status' => true, 'saunaReservations' => $saunaReservations], 200);
+                }else{
+                    return response()->json(['status' => false, "message"=>"لا يوجد حجوزات ساونا لعرضها"], 200);
+
+                }
+
         } else {
             return response()->json(['status' => false, 'message' => $validator->getMessageBag()->first()], 400);
         }
