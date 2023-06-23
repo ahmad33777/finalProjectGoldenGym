@@ -38,7 +38,7 @@ class ProdcutController extends Controller
                 return response()->json(
                     [
                         'status'=>true,
-                        'products'=>$product
+                        'products'=>$products
                     ],200
                    ); 
                 
