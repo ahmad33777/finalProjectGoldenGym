@@ -38,18 +38,21 @@ class SendNotificationr extends Controller
         $body = $request->body;
 
         $trainers = Trainer::all();
-        foreach ($trainers as $trainer) {
-            if ($trainer->fcm_token !== null) {
-                FCMService::send(
-                    $trainer->fcm_token,
-                    [
-                        'title' => $title,
-                        'body' => $body,
-                    ]
-                );
+        if(!$trainers->isEmpty()){
+            foreach ($trainers as $trainer) {
+                if ($trainer->fcm_token !== null) {
+                    FCMService::send(
+                        $trainer->fcm_token,
+                        [
+                            'title' => $title,
+                            'body' => $body,
+                        ]
+                    );
+                }
+    
             }
-
         }
+       
 
 
         $subscribers = Subscriber::all();
