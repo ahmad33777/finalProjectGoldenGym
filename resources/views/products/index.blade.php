@@ -127,7 +127,7 @@
                                             <td class="text-nowrap">{{ $product->name }}</td>
                                             <th class="text-nowrap">
                                                 <span class="badge rounded-pill bg-warning text-dark">
-                                                    {{ $product->category->name }}</span>
+                                                    {{ $product->category->name  }}</span>
 
 
                                             </th>
