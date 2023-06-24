@@ -30,7 +30,7 @@ class FacebookController extends Controller
 
         $fb->setDefaultAccessToken($token);
         $post=[
-            'message' => 'test post' ,
+            'message' => $request->post_body ,
         ];
         $response = $fb->post('/me/feed', $post);
         $graphNode = $response->getGraphNode();
