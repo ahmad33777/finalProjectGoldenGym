@@ -43,7 +43,7 @@
                         @csrf
                         <div class="card-body">
                             <div class="row">
-                                <textarea class="form-control" name="post_bady" id="post_bady" cols="150" rows="10"
+                                <textarea class="form-control" name="post_body" id="post_body" cols="150" rows="10"
                                     placeholder="أدخل محتوى المنشور "></textarea>
                             </div>
                             <br>

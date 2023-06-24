@@ -18,9 +18,9 @@ class FacebookController extends Controller
 
     public function createPost(Request $request)
     {
-        $token = "#";
-        $app_id = '#';
-        $app_secret = '#';
+        $token = "EAAMfWY0a5koBALlwYROgvwxGe4pZAffArYmuOFnepma0rZAPR7QtdcyPcd1xaZBU4uIXQ3hKevivfC0doI4cpZAiiJ50IlYVGYpkh4unrUwZBhoFauG7PLygfuT0mZAZCs7pxQUbgYyoxKY9XQnomzbc1wv5O6arPHil0bZBLloIxJkSfujl2zHPrMA4zp8fKzP5Qd1ZBHqcBGQZDZD";
+        $app_id = '878894410032714';
+        $app_secret = 'e08e7f275a6ad63938b3f23a409ab4d9';
 
         $fb = new Facebook([
             'app_id' => $app_id,
@@ -29,8 +29,8 @@ class FacebookController extends Controller
         ]);
 
         $fb->setDefaultAccessToken($token);
-        $post = [
-            'message' => $request->post_bady,
+        $post=[
+            'message' => 'test post' ,
         ];
         $response = $fb->post('/me/feed', $post);
         $graphNode = $response->getGraphNode();
@@ -43,6 +43,4 @@ class FacebookController extends Controller
 
         }
     }
-
-
 }
