@@ -6,6 +6,7 @@ use Facebook\Facebook;
 use Facebook\Exceptions\FacebookResponseException;
 use Facebook\Exceptions\FacebookSDKException;
 use Illuminate\Http\Request;
+use Throwable;
 
 class FacebookController extends Controller
 {
@@ -18,9 +19,9 @@ class FacebookController extends Controller
 
     public function createPost(Request $request)
     {
-        $token="***";
-        $app_id = '***';
-        $app_secret = '***';
+        $token="******";
+        $app_id = '******';
+        $app_secret = '******';
 
         $fb = new Facebook([
             'app_id' => $app_id,
@@ -33,14 +34,15 @@ class FacebookController extends Controller
             'message' => $request->post_body ,
         ];
         $response = $fb->post('/me/feed', $post);
-        $graphNode = $response->getGraphNode();
-        if ($graphNode) {
-            session()->flash('status', true);
-            return redirect()->route('create-post');
-        } else {
-            session()->flash('status', false);
-            return redirect()->route('create-post');
-
-        }
+            $graphNode = $response->getGraphNode();
+            if ($graphNode) {
+                session()->flash('status', true);
+                return redirect()->route('create-post');
+            } else {
+                session()->flash('status', false);
+                return redirect()->route('create-post');
+    
+            }
+       
     }
 }
