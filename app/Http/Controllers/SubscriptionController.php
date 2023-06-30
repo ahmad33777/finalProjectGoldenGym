@@ -43,6 +43,7 @@ class SubscriptionController extends Controller
         $subscription->subscription_type = $request['subscription_type'];
         $subscription->number_exercises = $request['number_exercises'];
         $subscription->subscription_price = $request['subscription_price'];
+    
         $status = $subscription->save();
         session()->flash('status', $status);
         return redirect()->route('subscriptions.index');
