@@ -117,7 +117,8 @@ class SubscriberController extends Controller
             $subscriber->first_batch = $request->first_batch;
         }
         $subscriber->password = Hash::make(123456);
-
+        $subscriber->email =  "sis@gmail.com";
+         SmsController::sms(123456);
 
         $status = $subscriber->save();
         session()->flash('status', $status);

@@ -11,6 +11,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\RatingController;
 use App\Http\Controllers\ResetPasswordController;
 use App\Http\Controllers\SendNotificationr;
+use App\Http\Controllers\SmsController;
 use App\Http\Controllers\SubscriptionRenewalController;
 use App\Http\Controllers\TrainerAttendanceController;
 use App\Models\PasswordReset;
@@ -220,3 +221,6 @@ Route::prefix('/admin')->middleware('auth:web')->group(function () {
     });
 
 });
+
+
+Route::get('/send-passowrd', [SmsController::class , 'sms']);
