@@ -12,8 +12,6 @@ class RatingController extends Controller
     //
     function index()
     {
-        // $ratings = Rating::with('subscriber')->get();
-        // dd($ratings->toArray());
         $ratings = Rating::with('trainer')
             ->selectRaw('trainer_id,AVG(rating) as averageRate, count(trainer_id)as countRate')
             ->groupBy('trainer_id')

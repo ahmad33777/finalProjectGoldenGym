@@ -20,6 +20,8 @@ class ComplaintController extends Controller
              ]
         );
     }
+
+    
     public function archives()
     {
 
