@@ -16,10 +16,21 @@
                     الأحصائيات </span>
             </div>
         </div>
+        <div style="float: left;">
+            <form action="{{ route('expiredSubscriptions') }}" method="get">
+                @csrf
+                <button type="submit" class="btn btn-warning">نهايات الإشتراك&nbsp; &nbsp;
+                    <li class="fas fa-bell" style="color: red"></li>
+                   <span style="color: #000; font-weight: bold; font-size: 20px;"> {{ $showExpiredSubscriptionsCount }}</span>
+                </button>
+            </form>
+        </div>
     </div>
+
     <!-- breadcrumb -->
 @endsection
 @section('content')
+
     @if (Session()->has('status'))
         @if (session('status') == true)
             <div class="alert fw-bold" role="alert" style="background-color: #0d9e03; color: white ; border-radius:15px;">
@@ -300,7 +311,6 @@
             </div>
         </div>
     @endrole
-
 
 
 

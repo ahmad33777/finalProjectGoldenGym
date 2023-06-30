@@ -47,6 +47,19 @@
                                         <p style="color: red ">{{ $message }}</p>
                                     @enderror
                                 </div>
+                                 <div class="col-4">
+                                    <div class="form-group text-primary">
+                                        <b style="color: red">*</b> <label for="email" style="font-weight: 900"> 
+                                        البريد الالكتروني
+                                             </label>
+                                        <input type="test" class="form-control" placeholder="اادخل البريد الإلكتروني"
+                                            name="email" id="email"
+                                            style="border-radius:10px ;border: 1px solid #1196db" value="{{ old('email') }}">
+                                    </div>
+                                    @error('email')
+                                        <p style="color: red ">{{ $message }}</p>
+                                    @enderror
+                                </div>
                                 <div class="col-4">
                                     <div class="form-group text-primary">
                                         <b style="color: red">*</b> <label for="phone" style="font-weight: 900">رقم
@@ -59,21 +72,7 @@
                                         <p style="color: red ">{{ $message }}</p>
                                     @enderror
                                 </div>
-                            {{-- start email input --}}
-                            <div class="col-4">
-                                <div class="form-group text-primary">
-                                    <b style="color: red">*</b> <label for="email" style="font-weight: 900">
-                                        البريد الإلكتروني
-                                        </label>
-                                    <input type="email" class="form-control" placeholder="أدخل رقم البريد الإلكتروني"
-                                        name="email" id="email"
-                                        style="border-radius:10px ; border: 1px solid #1196db" value="{{ old('email') }}">
-                                </div>
-                                @error('email')
-                                    <p style="color: red ">{{ $message }}</p>
-                                @enderror
-                            </div>
-                            {{-- end email input  --}}
+                         
                                 <div class="col-4">
                                     <div class="form-group text-primary">
                                         <label for="marital_status" style="font-weight: 900">الحالة الإجتماعية</label>

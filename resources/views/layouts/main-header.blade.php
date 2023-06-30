@@ -4,7 +4,6 @@
         <div class="main-header-left ">
             <div class="responsive-logo">
                 <a href="#"><img src="{{ asset('assets/image/logo.png') }}" class="logo-1" alt="logo"></a>
-
                 <a href="#"><img src="{{ asset('assets/image/logo.png') }}" class="logo-2" alt="logo"></a>
                 <a href="#"><img src="{{ asset('assets/image/logo.png') }}" class="dark-logo-2"
                         alt="logo"></a>
@@ -13,6 +12,8 @@
                 <a class="open-toggle" href="#"><i class="header-icon fe fe-align-left"></i></a>
                 <a class="close-toggle" href="#"><i class="header-icons fe fe-x"></i></a>
             </div>
+            
+
 
         </div>
         <div class="main-header-right">

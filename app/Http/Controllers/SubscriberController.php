@@ -6,10 +6,13 @@ use App\Models\Incoming;
 use App\Models\Subscriber;
 use App\Models\Subscription;
 use App\Models\Trainer;
+use App\Services\FCMService;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class SubscriberController extends Controller
 {
@@ -37,7 +40,7 @@ class SubscriberController extends Controller
             [
                 'name' => 'required|string|min:10|max:255',
                 'phone' => 'required|numeric|digits:10',
-                'email'=>'required|email|unique:subscribers',
+                'email' => 'required|email|unique:subscribers',
                 'marital_status' => 'nullable|in:أعزب,متزوج,مطلق,أرمل',
                 'age' => 'nullable|integer|min:12',
                 'weight' => 'nullable|numeric|min:0',
@@ -62,7 +65,7 @@ class SubscriberController extends Controller
                 'phone.digits' => 'يجب أن يتكون الهاتف من 10 أرقام',
 
                 'email.min' => 'الأسم ثلاثي وفوق',
-                'emial.required' => 'حقل البريد الإلكتروني مطلوب',
+                'email.required' => 'حقل البريد الإلكتروني مطلوب',
 
                 'age.integer' => 'يجب أن يكون العمر عددًا صحيحًا',
                 'age.min' => ' يجب ألا يقل عمر المشترك عن 12 عامًا',
@@ -96,7 +99,7 @@ class SubscriberController extends Controller
         $subscriber->name = $request->name;
         $subscriber->userName = $request->name; //يجب أن يعدل
         $subscriber->phone = $request->phone;
-        $subscriber->email  = $request->email;
+        $subscriber->email = $request->email;
         if ($request->age) {
             $subscriber->age = $request->age;
         }
@@ -120,9 +123,10 @@ class SubscriberController extends Controller
         if ($request->first_batch) {
             $subscriber->first_batch = $request->first_batch;
         }
-        $subscriber->password = Hash::make(123456);
-        $subscriber->email =  "sis@gmail.com";
-         SmsController::sms(123456);
+        // $subscriber->password = Hash::make(123456);
+        $password = Str::random(8);
+        $subscriber->password = $password;
+        SmsController::sms($password);
 
         $status = $subscriber->save();
         session()->flash('status', $status);
@@ -381,6 +385,45 @@ class SubscriberController extends Controller
         // dd($subscriber->toArray());
         return view('subscribers.SubscriptionReport')->with('subscriber', $subscriber);
     }
- 
+
+
+
+
+    public function expiredSubscriptions()
+    {
+        $today = date('Y-m-d'); // اليوم
+        $beforeThreeDays = date('Y-m-d', strtotime('-3 days')); // قبل ب 3 ايام
+        $afterThreeDays = date('Y-m-d', strtotime('+3 days')); // بعد ب 3 ايام
+
+        $subscribers = Subscriber::whereBetween('subscription_end', [$beforeThreeDays, $afterThreeDays])->get();
+
+        return view('subscribers.expiredSubscriptions', compact('subscribers'));
+    }
+
+
+
+    public function sendAlert()
+    {
+        $today = date('Y-m-d'); // اليوم
+        $beforeThreeDays = date('Y-m-d', strtotime('-3 days')); // قبل ب 3 ايام
+        $afterThreeDays = date('Y-m-d', strtotime('+3 days')); // بعد ب 3 ايام
+        $subscribers = Subscriber::whereBetween('subscription_end', [$beforeThreeDays, $afterThreeDays])->get();
+
+        foreach ($subscribers as $subscriber) {
+            if ($subscriber->fcm_token !== null) {
+                FCMService::send(
+                    $subscriber->fcm_token,
+                    [
+                        'title' => 'GoldenGym',
+                        'body' => 'من فضلك قم بتسديد الإشتراك  حتى تتمكن من الإلتحاق بالتمارين',
+                    ]
+                );
+            }
+
+        }
+        session()->flash('status', true);
+        return redirect()->back();
+    }
+
 
 }

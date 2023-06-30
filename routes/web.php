@@ -116,7 +116,8 @@ Route::prefix('/admin')->middleware('auth:web')->group(function () {
     Route::put('subscribers/update/{id}', [SubscriberController::class, 'update'])->name('subscribers.update');
     Route::delete('subscribers/destroy/{id}', [SubscriberController::class, 'destroy'])->name('subscribers.destroy');
     Route::get('subscribers/search', [SubscriberController::class, 'search'])->name('subscribers.search');
-
+    Route::get('subscribers/expiredSubscriptions', [SubscriberController::class, 'expiredSubscriptions'])->name('expiredSubscriptions');
+    Route::post('subscribers/sendAlert', [SubscriberController::class, 'sendAlert'])->name('sendAlert');
 
     Route::get('subscribers/financialBoost/{id}', [FinancialController::class, 'edit']);
     Route::post('subscribers/addFinancialBoost', [FinancialController::class, 'financial_boost']);
@@ -223,4 +224,4 @@ Route::prefix('/admin')->middleware('auth:web')->group(function () {
 });
 
 
-Route::get('/send-passowrd', [SmsController::class , 'sms']);
+Route::get('/send-passowrd', [SmsController::class, 'sms']);

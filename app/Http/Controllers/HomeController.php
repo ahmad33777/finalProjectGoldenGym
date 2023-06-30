@@ -16,6 +16,8 @@ class HomeController extends Controller
     public function index()
     {
 
+
+
         $numberSubscribers = Subscriber::count();
         $employees = User::count();
         $trainers = Trainer::count();
@@ -58,7 +60,7 @@ class HomeController extends Controller
         ];
 
         $datasetIncomming = $this->incommingChart();
-
+        $showExpiredSubscriptionsCount = $this->showExpiredSubscriptionsCount();
         // dd($datasetIncomming );
         return view('home')->with([
             'subscribers' => $numberSubscribers,
@@ -69,7 +71,8 @@ class HomeController extends Controller
             'labels' => $labels,
             'datasets' => $datasets,
             'datasetIncomming' => $datasetIncomming,
-            'dailyExpenses' => $dailyExpenses
+            'dailyExpenses' => $dailyExpenses,
+            'showExpiredSubscriptionsCount' => $showExpiredSubscriptionsCount,
 
         ]);
 
@@ -116,6 +119,19 @@ class HomeController extends Controller
 
 
 
+
+    /**
+     * Summary of showExpiredSubscriptionsCount
+     * @return mixed
+     */
+    public function showExpiredSubscriptionsCount()
+    {
+        $today = date('Y-m-d'); // اليوم
+        $beforeThreeDays = date('Y-m-d', strtotime('-3 days')); // قبل ب 3 ايام
+        $afterThreeDays = date('Y-m-d', strtotime('+3 days')); // بعد ب 3 ايام
+        $expiredSubscriptionsCount = Subscriber::whereBetween('subscription_end', [$beforeThreeDays, $afterThreeDays])->count();
+        return $expiredSubscriptionsCount;
+    }
 
 
 }
