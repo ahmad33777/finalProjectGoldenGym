@@ -96,7 +96,7 @@ class SubscriberController extends Controller
         $subscriber->name = $request->name;
         $subscriber->userName = $request->name; //يجب أن يعدل
         $subscriber->phone = $request->phone;
-        $subscriber->email  = "aaa@gmail.com";
+        $subscriber->email  = $request->email;
         if ($request->age) {
             $subscriber->age = $request->age;
         }
