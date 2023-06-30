@@ -19,7 +19,6 @@ class SubscriberController extends Controller
     {
 
         $subscribers = Subscriber::with('subscription')->with('trainer')->get();
-        // dd($subscribers->toArray() );
         return view('subscribers.index')->with('subscribers', $subscribers);
     }
 
@@ -38,6 +37,7 @@ class SubscriberController extends Controller
             [
                 'name' => 'required|string|min:10|max:255',
                 'phone' => 'required|numeric|digits:10',
+                'email'=>'required|email|unique:subscribers',
                 'marital_status' => 'nullable|in:أعزب,متزوج,مطلق,أرمل',
                 'age' => 'nullable|integer|min:12',
                 'weight' => 'nullable|numeric|min:0',
@@ -60,6 +60,9 @@ class SubscriberController extends Controller
                 'phone.required' => 'رقم الهاتف مطلوب',
                 'phone.numeric' => 'يجب أن يكون الهاتف رقمًا',
                 'phone.digits' => 'يجب أن يتكون الهاتف من 10 أرقام',
+
+                'email.min' => 'الأسم ثلاثي وفوق',
+                'emial.required' => 'حقل البريد الإلكتروني مطلوب',
 
                 'age.integer' => 'يجب أن يكون العمر عددًا صحيحًا',
                 'age.min' => ' يجب ألا يقل عمر المشترك عن 12 عامًا',
