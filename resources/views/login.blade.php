@@ -33,11 +33,9 @@
                                         </h1>
                                     </div>
                                     @if (\Session::has('error'))
-                                        <div class="alert alert-danger">
-                                            <ul>
-                                                <li>{!! \Session::get('error') !!}</li>
-                                            </ul>
-                                        </div>
+                                        <div class="alert alert-warning" role="alert" style="text-align: center; border-radius: 10px; font-weight: bold">
+                                            {!! \Session::get('error') !!}
+                                          </div>
                                     @endif
                                     <div class="card-sigin">
                                         <div class="main-signup-header">
@@ -52,7 +50,6 @@
                                                         class="form-control @error('email') is-invalid @enderror"
                                                         value="{{ old('email') }}" required autocomplete="email" autofocus
                                                         placeholder="example@gmail.com">
-
                                                 </div>
 
                                                 <div class="form-group">
@@ -73,10 +70,12 @@
                                                                 <label style="color: #fff" class="form-check-label"
                                                                     for="remember">
                                                                     {{ __('تذكرني') }}
+
                                                                 </label>
                                                             </div>
                                                         </div>
                                                     </div>
+                                                    <a href="{{ route('user.forgetPasswordLoad') }}" style="color: #fff">خل نسيت كلمة السر ؟</a>
                                                 </div>
                                                 <button type="submit"class="btn  btn-block"
                                                     style="background-color: #FFD700">

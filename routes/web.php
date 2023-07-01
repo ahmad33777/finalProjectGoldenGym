@@ -41,6 +41,14 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Request;
 
 
+
+Route::get('users/forgetPassword', [UserAuthController::class, 'forgetPasswordLoad'])->name('user.forgetPasswordLoad');
+Route::post('users/sendURL', [UserAuthController::class, 'sendURL'])->name('user.sendURL');
+Route::get('/user/reset-password', [UserAuthController::class, 'resetPasswordshow'])->name('user.reset-password');
+Route::post('/user/reset-password', [UserAuthController::class, 'resetPassword'])->name('user.resetPassword'); // changepassword
+
+
+
 Route::get('/subscriber/reset-password', [\App\Http\Controllers\Api\SubscriberController::class, 'resetPasswordshow']);
 Route::post('/subscriber/reset-password', [\App\Http\Controllers\Api\SubscriberController::class, 'resetPassword'])->name('subscriber.reset-password');
 

@@ -2,8 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\ResetPasswordMail;
+use App\Models\User;
+use Carbon\Carbon;
+use DB;
+use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Str;
 
 class UserAuthController extends Controller
 {
@@ -15,20 +24,6 @@ class UserAuthController extends Controller
 
     public function login(Request $request)
     {
-        // $validated = $request->validate(
-        //     [
-        //         'email' => 'required|string|email',
-        //         'password' => 'required|string|min:3',
-        //         'remember' => 'boolean'
-        //     ],
-        //     [
-        //         'email.required' => 'رجاء إدخل البريد الإلكتروني ',
-        //         'email.email' => 'البريدج المدخل غير صحيح',
-        //         'password.required' => 'الرجاء , ادخل كلمة  المرورو ',
-
-        //     ]
-        // );
-        // dd($validated);
 
         $validator = Validator(
             $request->all(),
@@ -58,12 +53,6 @@ class UserAuthController extends Controller
         }
     }
 
-    public function editProfile()
-    {
-    }
-    public function updateProfile()
-    {
-    }
 
     public function logout(Request $request)
     {
@@ -71,4 +60,88 @@ class UserAuthController extends Controller
         $request->session()->invalidate(); // لابطال الجلسة
         return redirect()->route('admin.login');
     }
+
+
+
+    public function forgetPasswordLoad()
+    {
+        return view('forgotpassword');
+    }
+
+
+
+    public function sendURL(Request $request)
+    {
+        $validator = validator($request->all(), [
+            'email' => 'required|email',
+        ]);
+
+        $request->validate(
+            [
+                'email' => 'required|email',
+            ],
+            [
+                'email.required' => 'هذا الحقل كطلوب',
+                'email.email' => 'خطأفي التنسيق'
+            ]
+        );
+        $user = \App\Models\User::where('email', $request->email)->get();
+        if (count($user) > 0) {
+
+            $token = Str::random(40);
+            $domain = URL::to('/');
+            $url = $domain . '/user/reset-password?token=' . $token;
+
+            $data['url'] = $url;
+            $data['email'] = $request->email;
+            $data['title'] = 'Password Reset';
+            $data['body'] = 'من فضلك إضغط على الرابط التالي من أجل إعادة تعين كلمة المرور الخاصة بك';
+            Mail::to($request->email)->send(new ResetPasswordMail($data));
+            $dateTime = Carbon::now()->format('Y-m-d H:i:s');
+            $status = \App\Models\PasswordReset::updateOrCreate(
+                ['email' => $request->email],
+                ['token' => $token, 'created_at' => $dateTime],
+            );
+            session()->flash('status', $status);
+            return redirect()->back();
+
+
+
+        }
+    }
+
+
+    function resetPasswordshow(Request $request)
+    {
+        $resetData = DB::table('password_resets')->where('token', $request->token)->first();
+        $user = User::where('email', $resetData->email)->first();
+
+        if (isset($resetData)) {
+            $user = User::where('email', $resetData->email)->first();
+            return view('reset-password')->with('user', $user);
+        } else {
+            return view('errors.404');
+        }
+
+
+    }
+    function resetPassword(Request $request)
+    {
+        $request->validate([
+            'id' => 'required|',
+            'password' => 'required|string|min:6|confirmed',
+        ]);
+
+        $user = User::where('id', $request->id)->first();
+
+        $user->password = Hash::make($request->password);
+
+        $status = $user->save();
+
+        session()->flash('status', $status);
+        return redirect()->back();
+
+    }
+
+
 }
