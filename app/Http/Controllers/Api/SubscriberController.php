@@ -332,7 +332,7 @@ class SubscriberController extends Controller
                     return response()->json(
                         [
                             'status' => false,
-                            'message' => 'المستخدم غير موجود'
+                            'message' => 'تأكد من صحة البريد الإلكتروني'
                         ],
                         200
                     );
