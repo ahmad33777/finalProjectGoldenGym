@@ -424,7 +424,7 @@ class SubscriberController extends Controller
                 return response()->json(
                     [
                         'status' => false,
-                        'messgae' => 'رقم الجوال مستخدم بالفعل , ادخل رقم جوال اخر'
+                        'message' => 'رقم الجوال مستخدم بالفعل , ادخل رقم جوال اخر'
                     ],
                     200
                 );
