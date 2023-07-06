@@ -90,7 +90,7 @@ class SaunaReservationsController extends Controller
             $saunaReservations->deleted_at = now()->format('Y-m-d H:i:s');
             $status = $saunaReservations->save();
             if ($status ?? false) {
-                return response()->json(['status' => true, 'message' => 'تم إلغاء  الحجز'], 200);
+                return response()->json(['status' => true, 'message' => 'تم إلغاءالحجز'], 200);
             } else {
                 return response()->json(['status' => false, 'message' => 'حاول مرة اخرى'], 200);
             }
@@ -104,15 +104,15 @@ class SaunaReservationsController extends Controller
         $validator = Validator($request->all(), ['subscriber_id' => 'required|numeric|exists:sauna_reservations,subscriber_id']);
 
         if (!$validator->fails()) {
-            $saunaReservations = SaunaReservations::
+            $saunaReservation = SaunaReservations::
                 where('subscriber_id', $request->post('subscriber_id'))
                 ->where('deleted_at', null)
-                ->get();
+                ->get()->first();
 
-            if (!$saunaReservations->isEmpty()) {
-                return response()->json(['status' => true, 'saunaReservations' => $saunaReservations], 200);
+            if ($saunaReservation!=null) {
+                return response()->json(['status' => true, 'saunaReservations' => $saunaReservation], 200);
             } else {
-                return response()->json(['status' => false, "message" => "لا يوجد حجوزات ساونا لعرضها"], 200);
+                return response()->json(['status' => false, "message" => "لا يوجد لك حجز ساونا"], 200);
 
             }
 
