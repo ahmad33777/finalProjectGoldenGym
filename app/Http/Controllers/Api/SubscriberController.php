@@ -110,7 +110,7 @@ class SubscriberController extends Controller
                     return response()->json(
                         [
                             'status' => true,
-                            'message' => 'تم تحديث كلمة المرورو بنجاح'
+                            'message' => 'تم تحديث كلمة المرور بنجاح'
                         ],
                         200
                     );
@@ -428,25 +428,39 @@ class SubscriberController extends Controller
                     200
                 );
             } else {
-                $subscriber->phone = $request->post('new_phone');
-                $status = $subscriber->save();
-                if ($status) {
-                    return response()->json(
-                        [
-                            'status' => true,
-                            'message' => 'تم التحديث بنجاح',
-                        ],
-                        200
-                    );
-                } else {
+                $subscriber_2 = Subscriber::where('phone', $request->post('new_phone'))->first();
+                $trainer=Trainer::where('phone', $request->post('new_phone'))->first();
+                if($subscriber_2!=null || $trainer!= null){
                     return response()->json(
                         [
                             'status' => false,
-                            'message' => 'للأسف  لم يتم تحديث رقم الهاتف !!'
+                            'messgae' => 'رقم الجوال مستخدم بالفعل , ادخل رقم جوال اخر'
                         ],
                         200
                     );
+                }else{
+                    
+                    $subscriber->phone = $request->post('new_phone');
+                    $status = $subscriber->save();
+                    if ($status) {
+                        return response()->json(
+                            [
+                                'status' => true,
+                                'message' => 'تم التحديث بنجاح',
+                            ],
+                            200
+                        );
+                    } else {
+                        return response()->json(
+                            [
+                                'status' => false,
+                                'message' => 'للأسف  لم يتم تحديث رقم الهاتف !!'
+                            ],
+                            200
+                        );
+                    }
                 }
+               
 
 
             }
