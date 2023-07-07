@@ -110,7 +110,7 @@ class SubscriberController extends Controller
                     return response()->json(
                         [
                             'status' => true,
-                            'message' => 'تم تحديث كلمة المرورو بنجاح'
+                            'message' => 'تم تحديث كلمة المرور بنجاح'
                         ],
                         200
                     );
@@ -332,7 +332,7 @@ class SubscriberController extends Controller
                     return response()->json(
                         [
                             'status' => false,
-                            'message' => 'المستخدم غير موجود'
+                            'message' => 'تأكد من صحة البريد الإلكتروني'
                         ],
                         200
                     );
@@ -418,18 +418,20 @@ class SubscriberController extends Controller
         );
 
         if (!$validator->fails()) {
-            $subscriber = Subscriber::where('id', $request->post('subscriber_id'))->first();
-            if (is_null($subscriber)) {
+            $subscriber_1 = Subscriber::where('phone', $request->post('new_phone'))->first();
+            $trainer = Trainer::where('phone', $request->post('new_phone'))->first();
+            if ($subscriber_1 != null || $trainer != null) {
                 return response()->json(
                     [
                         'status' => false,
-                        'messgae' => 'غير مصرح  بالدخول'
+                        'message' => 'رقم الجوال مستخدم بالفعل , ادخل رقم جوال اخر'
                     ],
                     200
                 );
             } else {
-                $subscriber->phone = $request->post('new_phone');
-                $status = $subscriber->save();
+                $subscriber_2 = Subscriber::where('id', $request->post('subscriber_id'))->first();
+                $subscriber_2->phone = $request->post('new_phone');
+                $status = $subscriber_2->save();
                 if ($status) {
                     return response()->json(
                         [
@@ -447,8 +449,6 @@ class SubscriberController extends Controller
                         200
                     );
                 }
-
-
             }
         } else {
             return response()->json(

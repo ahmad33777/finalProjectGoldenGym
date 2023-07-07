@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 class ForgetPasswordController extends Controller
 {
@@ -62,9 +63,9 @@ class ForgetPasswordController extends Controller
                     return response()->json(
                         [
                             'status' => false,
-                            'message' => 'المستخدم غير موجود ؟؟'
+                            'message' => 'تأكد من صحة البريد الإلكتروني'
                         ],
-                        400
+                        200
                     );
                 }
             } else {
@@ -125,7 +126,7 @@ class ForgetPasswordController extends Controller
 
         $trainer = Trainer::where('id', $request->id)->first();
 
-        $trainer->password = \Hash::make($request->password);
+        $trainer->password = Hash::make($request->password);
 
         $status = $trainer->save();
 

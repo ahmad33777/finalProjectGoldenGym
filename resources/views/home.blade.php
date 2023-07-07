@@ -303,7 +303,7 @@
                                 <p style="color: red ">{{ $message }}</p>
                             @enderror
                             <div style="text-align: center">
-                                <button type="submit" class="btn btn-warning">تصدير وارد</button>
+                                <button type="submit" class="btn btn-warning">إضافة صادر</button>
                             </div>
                         </form>
                     </div>
