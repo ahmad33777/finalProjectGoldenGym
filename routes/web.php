@@ -14,6 +14,7 @@ use App\Http\Controllers\SendNotificationr;
 use App\Http\Controllers\SmsController;
 use App\Http\Controllers\SubscriptionRenewalController;
 use App\Http\Controllers\TrainerAttendanceController;
+use App\Mail\ResetPasswordMail;
 use App\Models\PasswordReset;
 use App\Models\Trainer;
 use Carbon\Carbon;
@@ -232,4 +233,12 @@ Route::prefix('/admin')->middleware('auth:web')->group(function () {
 });
 
 
-Route::get('/send-passowrd', [SmsController::class, 'sms']);
+// Route::get('/send-passowrd', [SmsController::class, 'sms']);
+// Route::get('mail', function () {
+//     $data['url'] = 'lknlk';
+//     $data['email'] = 'jbjl';
+//     $data['title'] = 'Password Reset';
+//     $data['body'] = 'من فضلك إضغط على الرابط التالي من أجل إعادة تعين كلمة المرور الخاصة بك';
+//     Mail::to('nouh.work@gmail.com')->send(new ResetPasswordMail($data));
+//     return redirect()->back();
+// });

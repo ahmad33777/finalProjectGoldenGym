@@ -32,10 +32,18 @@
                                             Golden <span style="color: #fff">Gym</span>
                                         </h1>
                                     </div>
+                                    @if (\Session::has('mailMessage'))
+                                        <div class="alert alert-warning" role="alert"
+                                            style="text-align: center; border-radius: 10px; font-weight: bold">
+                                            {!! \Session::get('mailMessage') !!}
+                                        </div>
+                                    @endif
+
                                     @if (\Session::has('error'))
-                                        <div class="alert alert-warning" role="alert" style="text-align: center; border-radius: 10px; font-weight: bold">
+                                        <div class="alert alert-warning" role="alert"
+                                            style="text-align: center; border-radius: 10px; font-weight: bold">
                                             {!! \Session::get('error') !!}
-                                          </div>
+                                        </div>
                                     @endif
                                     <div class="card-sigin">
                                         <div class="main-signup-header">
@@ -75,7 +83,8 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <a href="{{ route('user.forgetPasswordLoad') }}" style="color: #fff">خل نسيت كلمة السر ؟</a>
+                                                    <a href="{{ route('user.forgetPasswordLoad') }}" style="color: #fff">خل
+                                                        نسيت كلمة السر ؟</a>
                                                 </div>
                                                 <button type="submit"class="btn  btn-block"
                                                     style="background-color: #FFD700">

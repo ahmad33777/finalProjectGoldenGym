@@ -26,15 +26,8 @@ class UserController extends Controller
      */
     public function index()
     {
-        //
-        // $users  =  User::with('roles')->get();
-        // $users = User::with(['roles' => function ($q) {
-        //     $q->where('name', '!=', 'admin');
-        // }])->get();        // dd($users->toArray());
+         
         $users = User::where('id', '!=', Auth::user()->id)->withCount('roles')->paginate(10);
-        // $users  =  User::with('roles')->get();
-        // $users  =  User::withCount('roles')->get();
-        // dd($users->toArray());
         return view('users.index')->with('users', $users);
     }
 

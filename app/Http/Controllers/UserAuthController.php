@@ -102,8 +102,8 @@ class UserAuthController extends Controller
                 ['email' => $request->email],
                 ['token' => $token, 'created_at' => $dateTime],
             );
-            session()->flash('status', $status);
-            return redirect()->back();
+            return redirect()->route('admin.login')->with('mailMessage', 'الرجاء ادخال البريد الإلكتروني وكلمة المرورو بشكل صحيح');
+
 
 
 
