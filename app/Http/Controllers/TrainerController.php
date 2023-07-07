@@ -45,15 +45,7 @@ class TrainerController extends Controller
     {
 
         $request->validate(
-            [
-                'name' => ['required', 'string', 'min:5'],
-                'email' => 'required|email:rfc,dns',
-                'phone' => 'required|min:10|numeric',
-                'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|nullable',
-                'age' => 'required|min:16|numeric|nullable',
-                'marital_status' => 'nullable|in:أعزب,مطلق,متزوج,أرمل',
-                'schedule' => 'required|not_in:0',
-            ],
+           Trainer::rouleStore(),
             [
                 'name.required' => 'هذا الحقل مطلوب ',
                 'age.required' => 'هذا الحقل مطلوب ',
@@ -74,6 +66,8 @@ class TrainerController extends Controller
                 'schedule.not_in' => 'المدخل غير صحيح ؟؟',
             ]
         );
+
+
         $trainer = new Trainer();
         $trainer->name = $request->name;
         $trainer->email = $request->email;

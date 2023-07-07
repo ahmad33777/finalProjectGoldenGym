@@ -21,13 +21,28 @@ class Trainer extends Authenticatable
     use SoftDeletes;
     use HasApiTokens;
 
+
+    public static function rouleStore()
+    {
+        return [
+            'name' => ['required', 'string', 'min:5'],
+            'email' => 'required|email:rfc,dns',
+            'phone' => 'required|min:10|numeric',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|nullable',
+            'age' => 'required|min:16|numeric|nullable',
+            'marital_status' => 'nullable|in:أعزب,مطلق,متزوج,أرمل',
+            'schedule' => 'required|not_in:0',
+        ]
+        ;
+    }
+    
     protected $table = 'trainers';
 
     protected $fillable = [
         'name',
         'email',
         'phone',
-     ];
+    ];
 
 
     protected $hidden = [
@@ -49,16 +64,17 @@ class Trainer extends Authenticatable
     {
         return $this->hasMany(TrainerAttendance::class);
     }
-   
-  
-    
+
+
+
     public function schedules()
     {
         return $this->belongsToMany(schedule::class, 'schedule_trainers', 'trainer_id', 'schedule_id');
     }
 
 
-    public function ratings(){
+    public function ratings()
+    {
         return $this->hasMany(Rating::class);
     }
 
