@@ -127,8 +127,9 @@ class SubscriberController extends Controller
         }
         // $subscriber->password = Hash::make(123456);
         $password = Str::random(8);
-        $subscriber->password = $password;
-        // SmsController::sms($password);
+        $subscriber->password = Hash::make($password);
+
+         // SmsController::sms($password);
 
         $status = $subscriber->save();
         $data['title'] = 'Password Reset';
