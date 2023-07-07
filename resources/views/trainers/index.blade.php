@@ -32,28 +32,28 @@
     {{-- الرسالة عند الاضافة  --}}
     @if (Session()->has('status'))
         @if (session('status') == true)
-            <div class="alert alert-success fw-bold" role="alert">
+            <div class="alert fw-bold" role="alert" style="background-color: #4fc80d; color: white ; border-radius:15px;">
                 تمت اضافة المدرب الجديد
             </div>
         @else
-            <div class="alert alert-danger fw-bold" role="alert">
+            <div class="alert fw-bold" role="alert" style="background-color: #da1313; color: white ; border-radius:15px;">
                 فشلت العملية
             </div>
         @endif
     @endif
     @if ($errors->any())
-        <div class="alert alert-danger fw-bold" role="alert">
+        <div class="alert fw-bold" role="alert" style="background-color: #da1313; color: white ; border-radius:15px;">
             فشلت العملية من فضلك حاول مرة أخرى
         </div>
     @endif
     {{-- الرسالة عند التعديل --}}
     @if (Session()->has('statusUpdate'))
         @if (session('statusUpdate') == true)
-            <div class="alert alert-success fw-bold" role="alert">
+            <div class="alert fw-bold" role="alert" style="background-color: #4fc80d; color: white ; border-radius:15px;">
                 تمت تحديث معلومات المدرب
             </div>
         @else
-            <div class="alert alert-danger fw-bold" role="alert">
+            <div class="alert fw-bold" role="alert" style="background-color: #da1313; color: white ; border-radius:15px;">
                 فشلت العملية التحديث
             </div>
         @endif

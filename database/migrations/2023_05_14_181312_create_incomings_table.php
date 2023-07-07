@@ -18,7 +18,7 @@ return new class extends Migration {
             $table->date('incoming_date');
             $table->double('incoming_value');
             $table->foreignId('user_id')->constrained('users')->onUpdate('cascade')->onDelete('cascade')->nullable(false);
-            $table->foreignId('subscriber_id')->constrained('subscribers')->onUpdate('cascade')->onDelete('cascade')->nullable(false);
+            $table->foreignId('subscriber_id')->nullable()->constrained('subscribers')->onUpdate('cascade')->onDelete('cascade')->nullable(false);
             $table->timestamps();
             $table->softDeletes();
         });

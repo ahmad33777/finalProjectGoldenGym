@@ -22,7 +22,7 @@
 @section('content')
     @if (Session()->has('status'))
         @if (session('status') == true)
-            <div class="alert fw-bold" role="alert" style="background-color: #14628c; color: white ; border-radius:15px;">
+            <div class="alert fw-bold" role="alert" style="background-color: #0d9e03; color: white ; border-radius:15px;">
                 تمت اضافة الفئة الجديدة بنجاح
             </div>
         @else
@@ -33,7 +33,7 @@
     @endif
     @if (Session()->has('updateStatus'))
         @if (session('updateStatus') == true)
-            <div class="alert fw-bold" role="alert" style="background-color: #14628c; color: white ; border-radius:15px;">
+            <div class="alert fw-bold" role="alert" style="background-color: #0d9e03; color: white ; border-radius:15px;">
                 عملية تحديث معلومات الفئة تمت بنجاح
             </div>
         @else

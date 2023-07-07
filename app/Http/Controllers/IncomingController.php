@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Incoming;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class IncomingController extends Controller
@@ -18,8 +19,8 @@ class IncomingController extends Controller
 
             ],
             [
-              'endDate.date' => 'يجب أن يكون المدخل تاريخ',
-              'endDate.after_or_equal' =>'يجب أن يكون تاريخ الانتهاء تاريخًا بعد تاريخ البدء أو مساويًا له'
+                'endDate.date' => 'يجب أن يكون المدخل تاريخ',
+                'endDate.after_or_equal' => 'يجب أن يكون تاريخ الانتهاء تاريخًا بعد تاريخ البدء أو مساويًا له'
             ]
         );
         $startDate = $request['startDate'];
@@ -39,5 +40,29 @@ class IncomingController extends Controller
             ]);
 
         }
+    }
+
+
+    public function store(Request $request)
+    {
+        $request->validate([
+            'type' => 'required|string',
+            'amount' => 'required',
+            'note' => 'required',
+        ]);
+        $newIncome = new Incoming();
+        $newIncome->incoming_type = $request->type;
+        $newIncome->incoming_date = date('Y-m-d');
+        $newIncome->incoming_value = $request->amount;
+        $newIncome->user_id = Auth::user()->id;
+
+        return redirect()->back();
+
+
+
+
+
+
+
     }
 }

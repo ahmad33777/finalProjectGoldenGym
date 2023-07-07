@@ -24,7 +24,8 @@
 
     @if (Session()->has('status'))
         @if (session('status') == true)
-            <div class="alert fw-bold" role="alert" style="background-color: #14628c; color: white ; border-radius:15px;">
+            
+            <div class="alert fw-bold" role="alert" style="background-color: #4fc80d; color: white ; border-radius:15px;">
                 نجحت العمليةالأضافة
             </div>
         @else
@@ -107,10 +108,10 @@
                                         </td>
                                         <td>
                                             <button id="editBtn" type="button" value="{{ $subscription->id }}"
-                                                class="btn btn-primary btn-sm edit btn-flat editbtn"><i
+                                                class="btn btn-primary   edit btn-flat editbtn"><i
                                                     class='fa fa-edit'></i></a></button>
                                             <a href="#" onclick="confirmDestroy({{ $subscription->id }}, this)"
-                                                class="btn btn-danger btn-sm"><i class="fas fa-trash"></i>
+                                                class="btn btn-danger "><i class="fas fa-trash"></i>
                                             </a>
                                         </td>
 

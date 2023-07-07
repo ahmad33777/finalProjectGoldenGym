@@ -2,13 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\SendPassword;
 use App\Models\Attendance;
 use App\Models\User;
 use Carbon\Carbon;
 use Carbon\CarbonInterval;
+use Dotenv\Util\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
 use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Storage;
@@ -26,7 +29,7 @@ class UserController extends Controller
      */
     public function index()
     {
-         
+
         $users = User::where('id', '!=', Auth::user()->id)->withCount('roles')->paginate(10);
         return view('users.index')->with('users', $users);
     }
@@ -66,7 +69,7 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        
+
         $request->validate(
             [
                 'name' => 'required|string|min:10',
@@ -90,8 +93,8 @@ class UserController extends Controller
                 'password.min' => 'قصيرة جداًَ',
                 'image.image' => 'يجب ان يكون الملف المختار صورة',
                 'phone.required' => 'حقل الهاتف مطلوب.',
-                'phone.unique'=>'تم أخذ الهاتف بالفعل',
-                'email.unique'=>'لا يمكن أن يكون emil متكرر'
+                'phone.unique' => 'تم أخذ الهاتف بالفعل',
+                'email.unique' => 'لا يمكن أن يكون emil متكرر'
 
             ]
         );
@@ -106,7 +109,8 @@ class UserController extends Controller
         $user->workdays = implode('-', $request->workdays);
         $user->Worktime = $request->worktimes;
         $user->salary = $request->salary;
-        $user->password = Hash::make(123456);
+        $password = \Str::random(8);
+        $user->password = Hash::make($password);
         // to check if file exixts or not in the request
         if ($request->hasFile('image')) {
             $image = $request->file('image');
@@ -116,13 +120,11 @@ class UserController extends Controller
             $user->image = $path . $name;
         }
 
-
-        // dd($user->toArray());
         $status = $user->save();
-        // $user->assignRole($request->role);
-        // Session::flash('status', $status);
+        $data['title'] = 'Password Reset';
+        $data['password'] = $password;
+        Mail::to($user->email)->send(new SendPassword($data));
         session()->flash('status', $status);
-        // flash()->success('status', $status);
         return redirect()->route('users.index');
     }
 
@@ -162,7 +164,7 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    
+
 
     /**
      * Update the specified resource in storage.
@@ -176,12 +178,11 @@ class UserController extends Controller
         $request->validate(
             [
                 'name' => 'required|string|min:10',
-                'email' => 'required|email|unique:users',
-                'phone' => 'required|min:10|numeric|unique:users',
-                'workdays' => 'required',
-                'worktimes' => 'required|',
+                'email' => 'required|email',
+                'phone' => 'required|min:10|numeric',
+                'workdays' => 'nullable',
+                'worktimes' => 'nullable|',
                 'salary' => 'required|numeric',
-                'password' => 'required|string|min:6|regex:/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{6,}$/',
                 'image' => 'image|mimes:jpeg,png,jpg,gif',
             ],
             [
@@ -202,12 +203,13 @@ class UserController extends Controller
         $user->name = $request->name;
         $user->email = $request->email;
         $user->phone = $request->phone;
-        $user->marital_status = $request->marital_status;
-        $user->workdays = implode('-', $request->workdays);
-        $user->Worktime = $request->worktimes;
+        if ($request->filled('workdays')) {
+            $user->workdays = implode('-', $request->workdays);
+            $user->Worktime = $request->worktimes;
+
+        }
+
         $user->salary = $request->salary;
-        $user->password = Hash::make($request->password);
-        // to check if file exixts or not in the request
         if ($request->hasFile('image')) {
             $image = $request->file('image');
             $path = 'uplodes/employees/images/';
@@ -236,8 +238,6 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        // $role =  Role::findById($id)->delete();
-        // return redirect()->back();
         $userDestroy = User::destroy($id);
         if ($userDestroy) {
             return response()->json(['icon' => 'success', 'title' => 'تم الحذف بنجاح'], 200);
@@ -249,8 +249,6 @@ class UserController extends Controller
 
     public function search(Request $request)
     {
-        //    dd('csajkbk');
-        # code  for search process ...
         $search = $request->input('search');
         if ($search) {
             $users = User::where('id', '!=', Auth::user()->id)->withCount('roles')
@@ -339,7 +337,7 @@ class UserController extends Controller
 
     public function financialReportSearch(Request $request, $id)
     {
- 
+
         // dd($request->toArray());
         $request->validate(
             [
@@ -361,7 +359,7 @@ class UserController extends Controller
         $numDays = Attendance::where('user_id', $id)
             ->whereBetween('date', [$startDate, $endDate])->count();
 
-            // dd($numDays);
+        // dd($numDays);
         $totalTime = '00:00:00';
         $interval = CarbonInterval::seconds(0);
         foreach ($attendances as $attendance) {
@@ -374,8 +372,8 @@ class UserController extends Controller
                 'startDate' => $startDate,
                 'user' => $user,
                 'endDate' => $endDate,
-                'totalTime' => $totalTime ,
-               
+                'totalTime' => $totalTime,
+
             ]);
         } else {
             return view('users.financialReport')->with('user', $user);

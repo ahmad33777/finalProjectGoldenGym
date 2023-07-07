@@ -21,7 +21,7 @@
     {{-- main content --}}
 
     @if (session()->has('message'))
-        <div class="alert alert-success">
+        <div class="alert fw-bold" role="alert" style="background-color: #0d9e03; color: white ; border-radius:15px;">
             {{ session('message') }}
         </div>
     @endif
@@ -34,8 +34,8 @@
                     <div class="d-flex justify-content-between">
                         <div class="col-lg-12 margin-tb">
                             <div class="pull-right">
-                                 
-                                    <button type="button" class="btn btn-primary" data-toggle="modal"
+
+                                <button type="button" class="btn btn-primary" data-toggle="modal"
                                     data-target="#addnewRole">
                                     <i class="fas fa-plus-square">&nbsp;&nbsp;</i>
                                     اضافة مهنة جديدة
@@ -100,7 +100,7 @@
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">
                         <i class="fas fa-plus-square">&nbsp;&nbsp;</i>
-                           مسمى وظيفي جديد  
+                        مسمى وظيفي جديد
                     </h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
@@ -111,17 +111,18 @@
 
                     <div class="modal-body ">
                         <div class="form-group text-primary">
-                            <label for="name"> <span style="color: red;  font-weight: bolder">* </span> المسمى الوظيفي</label>
+                            <label for="name"> <span style="color: red;  font-weight: bolder">* </span> المسمى
+                                الوظيفي</label>
                             <input type="text" class="form-control"id="role_name" aria-describedby="nameHelp"
-                            name="role_name" placeholder="المسى الوظيفي " required>
-                                 
+                                name="role_name" placeholder="المسى الوظيفي " required>
+
                             <small id="nameHelp" class="form-text text-muted">
 
                             </small>
                         </div>
-                         
 
-                         
+
+
 
 
 

@@ -16,16 +16,17 @@
             </div>
         </div>
     </div>
+
     <!-- breadcrumb -->
 @endsection
 @section('content')
     @if (Session()->has('status'))
         @if (session('status') == true)
-            <div class="alert alert-success fw-bold" role="alert">
+            <div class="alert fw-bold" role="alert" style="background-color: #0d9e03; color: white ; border-radius:15px;">
                 نجحت العمليةالأضافة
             </div>
         @else
-            <div class="alert alert-danger fw-bold" role="alert">
+            <div class="alert fw-bold" role="alert" style="background-color: #cb230a; color: white ; border-radius:15px;">
                 فشلت العملية العمليةالأضافة
             </div>
         @endif
@@ -34,14 +35,14 @@
     @if (Session()->has('statusUpdate'))
         @if (session('statusUpdate') == true)
             <div class="alert alert-success fw-bold" role="alert">
-                    نجحت العملية
+                نجحت العملية
             </div>
         @else
             <div class="alert alert-danger fw-bold" role="alert">
                 فشلت العملية التحديث
             </div>
         @endif
-    @endif 
+    @endif
     <br>
     <!-- row -->
     <div class="row row-sm">
@@ -233,7 +234,7 @@
                     <input type="hidden" id="scheduleID" name="scheduleID" />
                     @method('PUT')
                     @csrf
-                    
+
                     <div class="modal-body ">
                         <div class="form-group text-primary">
                             <label for="name"> <span style="color: red;  font-weight: bolder">* </span>
@@ -265,8 +266,8 @@
                                 العمل</label>
                             <div class="bootstrap-timepicker">
                                 <div class="bootstrap-timepicker">
-                                    <input type="time" class="form-control timepicker" id="edit_time_out" name="time_out"
-                                         >
+                                    <input type="time" class="form-control timepicker" id="edit_time_out"
+                                        name="time_out">
                                 </div>
                             </div>
                             <small id="nameHelp" class="form-text text-muted">
@@ -352,9 +353,9 @@
                 $('#editModel').modal('show');
 
                 $.ajax({
-                    type:'GET',
-                    url:'/admin/schedules/'+schedule_id+'/edit',
-                    success :  function(response){
+                    type: 'GET',
+                    url: '/admin/schedules/' + schedule_id + '/edit',
+                    success: function(response) {
                         // console.log(response);
                         $('#editname').val(response.schedule.name);
                         $('#edit_time_in').val(response.schedule.time_in);

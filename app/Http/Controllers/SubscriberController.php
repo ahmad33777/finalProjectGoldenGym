@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\SendPassword;
 use App\Models\Incoming;
 use App\Models\Subscriber;
 use App\Models\Subscription;
@@ -9,6 +10,7 @@ use App\Models\Trainer;
 use App\Services\FCMService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
@@ -126,9 +128,13 @@ class SubscriberController extends Controller
         // $subscriber->password = Hash::make(123456);
         $password = Str::random(8);
         $subscriber->password = $password;
-        SmsController::sms($password);
+        // SmsController::sms($password);
 
         $status = $subscriber->save();
+        $data['title'] = 'Password Reset';
+        $data['password'] = $password;
+        Mail::to($subscriber->email)->send(new SendPassword($data));
+
         session()->flash('status', $status);
 
 

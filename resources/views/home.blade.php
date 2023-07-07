@@ -266,7 +266,7 @@
                 </div>
             </div>
 
-            {{-- add new incomming  --}}
+            {{-- add new صادر  --}}
             <div class="col-sm-12 col-md-6  " style=" border-radius:8px ; color: white ; ">
                 <div class="card">
                     <div class="card-body" style="border-radius:8px ">
@@ -282,15 +282,57 @@
                                 name="type" id="type" style=" border: 1px solid #1196db">
                             <datalist id="types">
                                 <option value="مصاريف تشغيلية"> مصاريف تشغيلية</option>
-                                <option value="حجوزات ساونا">حجوزات ساونا</option>
-                                <option value="بيع منتج">بيع منتج</option>
-                                <option value="مصاريف شحن الكهرباء">مصاريف شحن الكهرباء</option>
+                                 <option value="مصاريف شحن الكهرباء">مصاريف شحن الكهرباء</option>
                             </datalist>
                             @error('type')
                                 <p style="color: red ">{{ $message }}</p>
                             @enderror
                             <br>
                             <input type="number" class="form-control" min="0" placeholder="ادخل قيمة الصادر بالشيكل"
+                                style=" border: 1px solid #1196db; margin-bottom: 17px" name="amount" id="amount">
+
+                            @error('amount')
+                                <p style="color: red ">{{ $message }}</p>
+                            @enderror
+                            <input type="text" class="form-control" min="0" placeholder="ملاحظات"
+                                style=" border: 1px solid #1196db; margin-bottom: 17px" name="note" id="note">
+
+                            @error('note')
+                                <p style="color: red ">{{ $message }}</p>
+                            @enderror
+                            <div style="text-align: center">
+                                <button type="submit" class="btn btn-warning">إضافة صادر</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+
+            {{-- add new incomiign  --}}
+            <div class="col-sm-12 col-md-6  " style=" border-radius:8px ; color: white ; ">
+                <div class="card">
+                    <div class="card-body" style="border-radius:8px ">
+                        <div class="main-content-label">
+                            الواردات
+                        </div>
+                        <p class="mg-b-20" style="color:#000">
+                                وارد جديد
+                        </p>
+                        <form action="{{ route('incomings.store') }}" method="post">
+                            @csrf
+                            <input list="types" placeholder="ادخل نوع الوارد " class="form-control" id=""
+                                name="type" id="type" style=" border: 1px solid #1196db">
+                            <datalist id="types">
+                                <option value="ببيع منتج">بيع منتج</option>
+                                <option value="حجوزات ساونا">حجوزات ساونا</option>
+                                <option value="بيع منتج">بيع منتج</option>
+                             </datalist>
+                            @error('type')
+                                <p style="color: red ">{{ $message }}</p>
+                            @enderror
+                            <br>
+                            <input type="number" class="form-control" min="0" placeholder="ادخل قيمة الوارد بالشيكل"
                                 style=" border: 1px solid #1196db; margin-bottom: 17px" name="amount" id="amount">
 
                             @error('amount')

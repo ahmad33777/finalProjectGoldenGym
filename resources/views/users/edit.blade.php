@@ -143,11 +143,6 @@
                                 @error('salary')
                                     <p style="color: red ; font-weight: bold">{{ $message }}</p>
                                 @enderror
-                                <div class="form-group text-primary">
-                                    <label for="password">كلمة مرورو جديدة</label>
-                                    <input type="password" class="form-control" placeholder="إدخل كلمة مرور جديد"
-                                        name="password" id="password">
-                                </div>
 
                             </div>
                             <div class="col-4">

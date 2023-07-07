@@ -45,7 +45,7 @@ class TrainerController extends Controller
     {
 
         $request->validate(
-           Trainer::rouleStore(),
+            Trainer::rouleStore(),
             [
                 'name.required' => 'هذا الحقل مطلوب ',
                 'age.required' => 'هذا الحقل مطلوب ',
@@ -87,7 +87,7 @@ class TrainerController extends Controller
 
         if ($request->schedule) {
             $schedule = schedule::where('name', $request->schedule)->first();
-            $trainer->schedules()->attach($schedule->id);
+            $trainer->schedules()->sync($schedule->id);
         }
         //  send password 
         $data['title'] = 'Password Reset';
@@ -166,7 +166,7 @@ class TrainerController extends Controller
         if ($request->schedule) {
             if ($trainer->schedules->first()->name !== $request->schedule) {
                 $schedule = schedule::where('name', $request->schedule)->first();
-                $trainer->schedules()->attach($schedule->id);
+                $trainer->schedules()->sync($schedule->id);
             }
         }
 
@@ -238,16 +238,11 @@ class TrainerController extends Controller
             return view('trainers.index')->with(['status' => $status, 'schedules' => $schedules, 'trainers' => $trainers]);
 
         }
-
-
     }
-
-
 
 
     public function attendanceReport(Request $request, $trainerID)
     {
-
         $request->validate(
             [
                 'startDate' => 'nullable|date',
@@ -259,10 +254,13 @@ class TrainerController extends Controller
                 'endDate.after_or_equal' => 'يجب أن يكون تاريخ الانتهاء تاريخًا بعد تاريخ البدء أو مساويًا له'
             ]
         );
+
         $startDate = $request['startDate'];
         $endDate = $request['endDate'];
         if ($startDate and $endDate) {
-            $trainer = Trainer::find(auth()->user()->id);
+            $trainer = Trainer::where('id', '=', $trainerID)->get();
+            // dd($trainer);
+
 
             $trainerAttendances = TrainerAttendance::where('trainer_id', $trainerID)
                 ->whereBetween('date', [$startDate, $endDate])->get();
@@ -286,8 +284,9 @@ class TrainerController extends Controller
             $currentDate = Carbon::now();
             $firstDateOfMonth = $currentDate->startOfMonth()->format('Y-m-d'); // Get the first date of the current month
             $lastDateOfMonth = $currentDate->endOfMonth()->format('Y-m-d'); // Get the last date of the current month
-            $trainer = Trainer::find(auth()->user()->id);
-            $trainerAttendances = TrainerAttendance::where('trainer_id', $trainerID)
+            $trainer = Trainer::whereId($trainerID)->first();
+             
+            $trainerAttendances = TrainerAttendance::where('trainer_id', $trainer->id)
                 ->whereBetween('date', [$firstDateOfMonth, $lastDateOfMonth])->get();
 
             $totalTime = '00:00:00';

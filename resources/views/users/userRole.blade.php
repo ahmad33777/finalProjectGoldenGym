@@ -4,7 +4,7 @@
     الصفحة الرئيسية
 @stop
 
- 
+
 
 @section('page-header')
     <!-- breadcrumb -->
@@ -26,7 +26,7 @@
     {{-- main content --}}
 
     @if (session()->has('message'))
-        <div class="alert alert-success">
+        <div class="alert fw-bold" role="alert" style="background-color: #4fc80d; color: white ; border-radius:15px;">
             {{ session('message') }}
         </div>
     @endif
@@ -79,8 +79,10 @@
                 <div class="card-body">
                     @if (Session()->has('status'))
                         @if (session('status') == true)
-                            <div class="alert alert-success fw-bold" role="alert">
+                            <div class="alert fw-bold" role="alert"
+                                style="background-color: #4fc80d; color: white ; border-radius:15px;">
                                 تم منح الصلاحية للموظف الحالي
+
                             </div>
                         @else
                             <div class="alert alert-danger fw-bold" role="alert">

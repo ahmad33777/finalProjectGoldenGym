@@ -44,7 +44,7 @@ use Illuminate\Support\Facades\Request;
 
 
 Route::get('users/forgetPassword', [UserAuthController::class, 'forgetPasswordLoad'])->name('user.forgetPasswordLoad');
-Route::post('users/sendURL', [UserAuthController::class, 'sendURL'])->name('user.sendURL');
+Route::post('users/sendURL', [UserAuthController::class, 'seinndURL'])->name('user.sendURL');
 Route::get('/user/reset-password', [UserAuthController::class, 'resetPasswordshow'])->name('user.reset-password');
 Route::post('/user/reset-password', [UserAuthController::class, 'resetPassword'])->name('user.resetPassword'); // changepassword
 
@@ -199,6 +199,7 @@ Route::prefix('/admin')->middleware('auth:web')->group(function () {
     });
     Route::prefix('/incomings')->group(function () {
         Route::get('/', [IncomingController::class, 'index'])->name('incomings.index');
+        Route::post('incoming-add',  [IncomingController::class , 'store'])->name('incomings.store');
     });
     Route::prefix('/facebook')->group(function () {
         Route::get('/create-post', [FacebookController::class, 'create'])->name('create-post');

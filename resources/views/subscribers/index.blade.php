@@ -22,9 +22,10 @@
 @section('content')
     @if (Session()->has('status'))
         @if (session('status') == true)
-            <div class="alert fw-bold" role="alert" style="background-color: #14628c; color: white ; border-radius:15px;">
+            <div class="alert fw-bold" role="alert" style="background-color: #0d9e03; color: white ; border-radius:15px;">
                 نجحت العمليةالأضافة
             </div>
+            
         @else
             <div class="alert fw-bold" role="alert" style="background-color: #da1313; color: white ; border-radius:15px;">
                 فشلت عملية
@@ -33,7 +34,7 @@
     @endif
     @if (Session()->has('updateStatus'))
         @if (session('updateStatus') == true)
-            <div class="alert fw-bold" role="alert" style="background-color: #14628c; color: white ; border-radius:15px;">
+            <div class="alert fw-bold" role="alert" style="background-color: #0d9e03; color: white ; border-radius:15px;">
                 نجحت عملية التحديث
             </div>
         @else
