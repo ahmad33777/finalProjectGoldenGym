@@ -390,7 +390,7 @@
                                     <label for="age">العمر</label>
                                     <input type="number" max="40" min="19" class="form-control"
                                         id="editage" aria-describedby="ageHelp" placeholder=" عمر المدرب"
-                                        name="age">
+                                        name="age" value="{{ old('age') }}">
                                     <small id="ageHelp" class="form-text text-muted">العمر </small>
                                     @error('age')
                                         <p style="color: red ">{{ $message }}</p>

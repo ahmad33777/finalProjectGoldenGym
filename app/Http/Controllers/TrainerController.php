@@ -43,19 +43,20 @@ class TrainerController extends Controller
 
     public function store(Request $request)
     {
-        //
+
         $request->validate(
             [
                 'name' => ['required', 'string', 'min:5'],
                 'email' => 'required|email:rfc,dns',
                 'phone' => 'required|min:10|numeric',
-                'image' => 'image|mimes:jpeg,png,jpg,gif|nullable',
-                'age' => 'min:16|numeric|nullable',
-                'marital_status' => 'in:أعزب,مطلق,متزوج,أرمل',
+                'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|nullable',
+                'age' => 'required|min:16|numeric|nullable',
+                'marital_status' => 'nullable|in:أعزب,مطلق,متزوج,أرمل',
                 'schedule' => 'required|not_in:0',
             ],
             [
                 'name.required' => 'هذا الحقل مطلوب ',
+                'age.required' => 'هذا الحقل مطلوب ',
                 'name.alpha' => 'يجب أن يكون الأسم عبارة عم حروف ؟؟',
                 'name.min' => 'يجب أن يكون الأسم ثلاثي ',
                 'name.string' => 'يجب أن يكون حروق',
@@ -73,15 +74,12 @@ class TrainerController extends Controller
                 'schedule.not_in' => 'المدخل غير صحيح ؟؟',
             ]
         );
-        // dd($request->all());
-
         $trainer = new Trainer();
         $trainer->name = $request->name;
         $trainer->email = $request->email;
         $trainer->phone = $request->phone;
         $trainer->age = $request->age;
         $trainer->marital_status = $request->marital_status;
-        // password  123456 deffult value to all trainer
         $password = Str::random(8);
         $trainer->password = Hash::make($password);
         if ($request->hasFile('image')) {
