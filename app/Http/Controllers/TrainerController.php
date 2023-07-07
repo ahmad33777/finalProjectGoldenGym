@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\SendPassword;
 use App\Models\PasswordReset;
 use App\Models\Trainer;
 use App\Models\schedule;
@@ -9,9 +10,11 @@ use App\Models\TrainerAttendance;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Carbon\CarbonInterval;
+use Illuminate\Support\Str;
 
 class TrainerController extends Controller
 {
@@ -79,7 +82,8 @@ class TrainerController extends Controller
         $trainer->age = $request->age;
         $trainer->marital_status = $request->marital_status;
         // password  123456 deffult value to all trainer
-        $trainer->password = Hash::make(123456);
+        $password = Str::random(8);
+        $trainer->password = Hash::make($password);
         if ($request->hasFile('image')) {
             $image = $request->file('image');
             $path = 'uplodes/trainers/images/';
@@ -93,8 +97,10 @@ class TrainerController extends Controller
             $schedule = schedule::where('name', $request->schedule)->first();
             $trainer->schedules()->attach($schedule->id);
         }
-
-
+        //  send password 
+        $data['title'] = 'Password Reset';
+        $data['password'] = $password;
+        Mail::to($trainer->email)->send(new SendPassword($data));
         session()->flash('status', $status);
         return redirect()->route('trainers.index');
 
@@ -398,7 +404,7 @@ class TrainerController extends Controller
 
     }
 
- 
+
 
 
 }
